@@ -42,6 +42,7 @@ jobs:
 
     - name: Add EC2 Host to Known Hosts
       run: |
+        mkdir -p ~/.ssh
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Copy docker-compose.yml to EC2
