@@ -59,8 +59,12 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
         chmod 600 private_key.pem
         ssh -i private_key.pem ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "
-          ls &&
+          echo "pwd :"  
           pwd &&
+          echo "ls :"
+          ls &&
+          echo "ls Timemanager :"
+          ls Timemanager &&
           docker-compose up -d
         "
         rm private_key.pem
