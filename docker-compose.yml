@@ -1,0 +1,48 @@
+# Version of docker-compose.
+version: '3'
+
+# Containers we're going to run.
+services:
+   # Our Phoenix container.
+   phoenix:
+      # The build parameters for this container.
+      build:
+         # Here we define that it should build from the current directory.
+         context: ./backend
+      environment:
+         # Variables to connect to our Postgres server.
+         PGUSER: postgres
+         PGPASSWORD: pwd
+         PGDATABASE: timemanager_dev
+         PGPORT: 5432
+         # Hostname of our Postgres container.
+         PGHOST: t-poo-700-nce_10-db-1
+      ports:
+         # Mapping the port to make the Phoenix app accessible outside of the container.
+         - "4000:4000" #this will make you able to curl, from your windows host, to localhost:4000
+      depends_on:
+         # The DB container needs to be started before we start this container.
+         - db
+   db:
+      # We use the predefined Postgres image.
+      image: postgres:9.6
+      environment:
+         # Set user/password for Postgres.
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: pwd
+         # Set a path where Postgres should store the data.
+         PGDATA: /var/lib/postgresql/data/pgdata
+      restart: always
+      volumes:
+         - pgdata:/var/lib/postgresql/data
+   frontend:
+      build:
+         context: ./frontend
+         dockerfile: Dockerfile
+      ports:
+         - "80:80"
+      volumes:
+         - ./frontend:/app
+      
+volumes:
+   pgdata:
