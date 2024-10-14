@@ -47,6 +47,6 @@ defmodule TimemanagerWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug CORSPlug, origins: {"http://localhost:5173"}
+  plug CORSPlug, origins: {"http://54.162.10.55:80"}
   plug TimemanagerWeb.Router
 end
