@@ -5,6 +5,8 @@ version: '3'
 services:
    # Our Phoenix container.
    phoenix:
+      # The image we're going to use.
+      image: imluky/backend:latest
       # The build parameters for this container.
       build:
          # Here we define that it should build from the current directory.
@@ -36,6 +38,7 @@ services:
       volumes:
          - pgdata:/var/lib/postgresql/data
    frontend:
+      image: imluky/frontend:latest
       build:
          context: ./frontend
          dockerfile: Dockerfile

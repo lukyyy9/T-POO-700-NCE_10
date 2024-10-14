@@ -54,10 +54,6 @@ jobs:
         source: "docker-compose.yml"
         target: "~/"
 
-    - name: Deploy to EC2
-      env:
-        DOCKER_HOST: ssh://${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }}
+    - name: Docker Compose Up in EC2
       run: |
-        docker-compose down
-        docker-compose pull
-        docker-compose up -d
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "docker-compose up -d"
