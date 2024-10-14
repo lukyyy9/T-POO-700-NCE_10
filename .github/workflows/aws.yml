@@ -59,8 +59,6 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
         chmod 600 private_key.pem
         ssh -i private_key.pem ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "
-          mkdir backend &&
-          mkdir frontend &&
           docker-compose up --build
         "
         rm private_key.pem
