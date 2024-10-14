@@ -1,0 +1,42 @@
+name: Deploy to EC2
+
+# Trigger the action when code is pushed to the main branch
+on:
+  push:
+    branches:
+      - main
+
+# Define the job
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Install SSH client on GitHub runner
+      - name: Install SSH client
+        run: sudo apt-get update && sudo apt-get install -y ssh
+
+      # Step 3: Add the EC2 SSH key
+      - name: Add SSH Key
+        run: |
+          echo "${{ secrets.EC2_KEY }}" > ec2-key.pem
+          chmod 600 ec2-key.pem
+
+      # Step 4: Copy the Docker Compose files to the EC2 instance
+      - name: Copy files to EC2
+        run: |
+          scp -i ec2-key.pem -o StrictHostKeyChecking=no -r ./backend ./frontend docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/
+
+      # Step 5: SSH into EC2 and restart the Docker Compose services
+      - name: Deploy on EC2
+        run: |
+          ssh -i ec2-key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/${{ secrets.EC2_USER }}/app
+            docker-compose down
+            docker-compose up -d --build
+          EOF
