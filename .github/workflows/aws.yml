@@ -56,4 +56,7 @@ jobs:
 
     - name: Docker Compose Up in EC2
       run: |
-        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "docker-compose up -d"
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -i private_key.pem ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "docker-compose up -d"
+        rm private_key.pem
