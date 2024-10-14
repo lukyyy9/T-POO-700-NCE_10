@@ -65,6 +65,8 @@ jobs:
           ls &&
           echo "ls Timemanager :"
           ls Timemanager &&
+          mkdir backend &&
+          mkdir frontend &&
           docker-compose up -d
         "
         rm private_key.pem
