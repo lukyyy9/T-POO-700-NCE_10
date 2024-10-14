@@ -34,6 +34,12 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
+    - name: Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose --version
+
     - name: Copy docker-compose.yml to EC2
       uses: appleboy/scp-action@master
       with:
@@ -48,12 +54,7 @@ jobs:
         DOCKER_HOST: ssh://${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }}
       run: |
         mkdir -p ~/.ssh
-        touch ~/.ssh/known_hosts
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-        chmod 600 private_key.pem
-        ssh -i private_key.pem ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh && echo '${{ secrets.SSH_PRIVATE_KEY }}' > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa"
-        export DOCKER_HOST=ssh://${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }}
-        docker-compose pull
-        docker-compose up -d
-        rm -f private_key.pem
+        ssh ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} "docker-compose pull && docker-compose up -d"
