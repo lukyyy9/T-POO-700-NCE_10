@@ -101,7 +101,7 @@ export default {
         }
     },
     mounted() {
-        // Code to run when component is mounted
+        console.log(import.meta.env.VITE_AXIOSBASEURL);
     }
 };
 </script>
