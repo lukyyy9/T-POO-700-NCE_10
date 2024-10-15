@@ -12,6 +12,9 @@ RUN npm install
 # Copier les fichiers de ton projet
 COPY . .
 
+# Renommer le fichier .env.prod en .env
+RUN mv .env.prod .env
+
 # Compiler l'application Vue.js
 RUN npm run build
 
