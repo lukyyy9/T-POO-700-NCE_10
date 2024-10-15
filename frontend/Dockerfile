@@ -12,15 +12,12 @@ RUN npm install
 # Copier les fichiers de ton projet
 COPY . .
 
-# Renommer le fichier .env.prod en .env
-RUN mv .env.prod .env
-
-# Compiler l'application Vue.js
-RUN npm run build
-
-# Étape 2 : Serveur Nginx pour la prod
-FROM nginx:alpine
-
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN if [ -f .env ]; then npm run dev; else \
+    mv .env.prod .env && \
+    npm run build && \
+    # Étape 2 : Serveur Nginx pour la prod
+    FROM nginx:alpine && \
+    COPY --from=build-stage /app/dist /usr/share/nginx/html && \
+    EXPOSE 80 && \
+    CMD ["nginx", "-g", "daemon off;"]; \
+    fi
