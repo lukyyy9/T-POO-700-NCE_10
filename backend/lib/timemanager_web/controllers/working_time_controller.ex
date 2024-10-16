@@ -1,6 +1,7 @@
 defmodule TimemanagerWeb.WorkingTimeController do
   use TimemanagerWeb, :controller
 
+  alias TimemanagerWeb.WorkingTimeController
   alias Timemanager.WorkingTimeContext
   alias Timemanager.WorkingTimeContext.WorkingTime
 
@@ -10,6 +11,20 @@ defmodule TimemanagerWeb.WorkingTimeController do
     workingtime = WorkingTimeContext.get_by_user_id_and_id(user_id, id)
     render(conn, "show.json", working_time: workingtime)
   end
+
+
+  #def get_by_user_id(conn, %{"user_id" => user_id}) do
+    #workingtime = WorkingTimeContext.get_by_user_id(user_id)
+    #render(conn, "show.json", working_time: workingtime)
+  #end
+
+  def get_by_user_id(conn, %{"user_id" => user_id}) do
+    workingtime = WorkingTimeContext.get_by_user_id(user_id)
+    conn
+    |> put_status(:ok)
+    |>render("index.json",workingtime: workingtime)
+  end
+
 
   def index(conn, _params) do
     workingtime = WorkingTimeContext.list_workingtime()
@@ -27,10 +42,7 @@ defmodule TimemanagerWeb.WorkingTimeController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    working_time = WorkingTimeContext.get_working_time!(id)
-    render(conn, :show, working_time: working_time)
-  end
+
 
   def update(conn, %{"id" => id, "working_time" => working_time_params}) do
     working_time = WorkingTimeContext.get_working_time!(id)

@@ -8,16 +8,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/workingTimes/:user_id',
-      name: 'Working Times',
-      component: WorkingTimes,
-      exact: true
+      //path: '/workingTime/:user_id',
+     // name: 'Working Times',
+      //component: WorkingTimes,
+      //props: true
     },
     {
       path: '/workingTime/:user_id',
       name: 'Working time creation',
       component: WorkingTime,
-      exact: true
+      props: true
     },
     {
       path: '/workingTime/:id',

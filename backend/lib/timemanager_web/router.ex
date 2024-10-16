@@ -14,7 +14,8 @@ defmodule TimemanagerWeb.Router do
 
     # WorkingTime
     post "/workingTime/:user_id", WorkingTimeController, :create
-    resources "/workingTime", WorkingTimeController, except: [:new, :edit, :create]
+    get "/workingTime/:user_id", WorkingTimeController, :get_by_user_id
+    resources "/workingTime", WorkingTimeController, except: [:new, :edit]
 
     # Clocks
     get "/clocks/:user_id", ClockController, :get_by_user_id

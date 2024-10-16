@@ -24,8 +24,12 @@ defmodule Timemanager.WorkingTimeContext do
   """
   def get_by_user_id(user_id) do
     query = from(w in WorkingTime, where: w.user_id == ^user_id)
-    Repo.one(query)
+    Repo.all(query)
   end
+
+
+
+
 
   @doc """
   Returns the list of workingtime.

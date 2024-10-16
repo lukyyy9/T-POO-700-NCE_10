@@ -8,6 +8,10 @@ defmodule TimemanagerWeb.WorkingTimeJSON do
     %{data: for(working_time <- workingtime, do: data(working_time))}
   end
 
+
+
+
+
   @doc """
   Renders a single working_time.
   """
@@ -22,6 +26,7 @@ defmodule TimemanagerWeb.WorkingTimeJSON do
   defp data(%WorkingTime{} = working_time) do
     %{
       id: working_time.id,
+      user_id: working_time.user_id,
       start: working_time.start,
       end: working_time.end
     }
