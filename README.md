@@ -41,6 +41,8 @@
 
 - In the frontend folder, run `npm run dev`
 
+- Open your browser and go to `http://localhost:80`
+
 ## Troubleshooting
 
 - If you encounter an error with some pending migrations, run `mix ecto.reset`
