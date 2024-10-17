@@ -4,8 +4,17 @@ export default {
     "./src/**/*.{html,js,vue}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#ffdd67',
+        primaryAccent: '#FFEFB7',
+        secondary: '#DBADFF',
+        secondaryAccent: '#E7C9FF',
+        mainFrame: '#303030',
+        frame: '#4E4E4E',
+        red: '#FF4141',
+      },
+    },
   },
   plugins: [],
 }
-
