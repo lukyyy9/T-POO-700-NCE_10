@@ -1,18 +1,18 @@
 <template>
-    <div id="ClockManager" class="flex-col m-3 w-1/2 min-h-screen overflow-hidden bg-[#4E4E4E] rounded-[10px] p-5">
+    <div id="ClockManager" class="flex-col m-3 w-1/2 h-5/6 bg-[#4E4E4E] rounded-[10px] p-5">
             <div class="flex justify-between">
-                <p class="font-cormorant font-semibold text-[25px] text-white">My Clocks</p>
+                <h1 class="text-[25px] text-white">My Clocks</h1>
                 <button @click="clock" class="w-[112px] h-[33px] rounded-[8px] bg-[#DBADFF] border-[2px] border-[#E7C9FF] drop-shadow-xl hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300" ><p class="font-inter font-normal text-[14px]">Clock in 📝</p></button>
             </div>
             <div class="flex-col mt-6 ml-2">
-                <p class="font-cormorant font-medium text-[12px]  text-white border-b-[1px] border-white mb-3" >{{ formatDayMonth(startDateTime) }}</p>
-                <div class="flex justify-center p-2 bg-[#656565] rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2 overflow-hidden min-h-screen">
-                    <div v-if="clocksDay.length === 0" class="pt-5 text-[12px]">
+                <h2 class="text-[15px]  text-white border-b-[1px] border-white" >{{ formatDayMonth(startDateTime) }}</h2>
+                <div class="flex justify-center p-2 bg-[#656565] rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2">
+                    <div v-if="clocksDay.length === 0" class="pt-2 pb-2 text-[12px]">
                         <p>No clocks available for today !</p>
                     </div>
                     <div v-else class="flex-col justify-center items-center w-11/12">
                         <div v-for="(clock, i) in clocksDay" :key="i" class="flex p-1 justify-between">
-                            <p v-if="i === 0" >Start</p>
+                            <p v-if="i === 0" > Start</p>
                             <p v-else-if="i === clocksDay.length-1" >End</p>
                             <p v-else-if="clock.status">Break End</p>
                             <p v-else>Break Start</p>
