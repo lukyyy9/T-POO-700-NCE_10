@@ -29,7 +29,7 @@ defmodule Timemanager.Repo do
     env_vars = load_env_file()
 
     #log the env vars
-    IO.inspect(env_vars)
+    IO.inspect(env_vars, label: "Loaded Environment Variables")
 
     # Remplacer les valeurs des variables d'environnement si elles sont nulles
     config = config
@@ -38,7 +38,7 @@ defmodule Timemanager.Repo do
     |> Keyword.put(:database, System.get_env("PGDATABASE") || env_vars["PGDATABASE"])
     |> Keyword.put(:hostname, System.get_env("PGHOST") || env_vars["PGHOST"])
     |> Keyword.put(:port, (System.get_env("PGPORT") || env_vars["PGPORT"]) |> String.to_integer)
-
+    IO.inspect(config, label: "Final Repo Config")
     {:ok, config}
   end
 end

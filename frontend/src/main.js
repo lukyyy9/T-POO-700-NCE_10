@@ -12,6 +12,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Noir from './presets/Noir';
+import Toolbar from 'primevue/toolbar';
 
 const app = createApp(App);
 
@@ -34,6 +35,7 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Chart', Chart);
 //app.component('Select', Select);
+app.component('Toolbar', Toolbar);
 
 
 app.use(router);

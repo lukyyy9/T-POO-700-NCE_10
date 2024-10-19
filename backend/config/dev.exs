@@ -2,14 +2,13 @@ import Config
 
 # Configure your database
 config :timemanager, Timemanager.Repo,
-  username: "postgres",
-  password: "pwd",
-  hostname: "host.docker.internal",
-  database: "timemanager_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
+username: "postgres",
+password: "pwd",
+hostname: "172.17.0.1",
+database: "timemanager_dev",
+stacktrace: true,
+show_sensitive_data_on_connection_error: true,
+pool_size: 10
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

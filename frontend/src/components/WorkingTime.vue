@@ -103,57 +103,63 @@ async updateWorkingTime() {
   }
 };
 </script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+</style>
 
 <template>
-  <div>
-    <h2 class="text-center font-bold mb-8">Working Times for User {{ user_id }}</h2>
+  <div style="background-color: #4E4E4E; padding: 20px; border-radius: 8px;max-width: 1200px;">
+    <h2 class="text-left font-bold mb-8" style="color: white; font-family:'Cormorant Garamond', serif;font-weight: 600;">Working Times for User {{ user_id }}</h2>
 
+    <div class="table-wrapper" style="max-width: 90%; margin-left: 0;">
+      <DataTable :value="workingTimes" showGridlines responsiveLayout="scroll">
+        <Column field="id" header="ID"></Column>
+        <Column field="start" header="Start Time"></Column>
+        <Column field="end" header="End Time"></Column>
+        <Column header="Actions">
+          <template #body="slotProps">
+            <Button
+              icon="pi pi-pencil"
+              class="p-mr-2"
+              text
+              @click="editWorkingTime(slotProps.data)"
+              severity="info"
+            />
+            <Button
+              icon="pi pi-trash"
+              text
+              @click="deleteWorkingTime(slotProps.data.id)"
+              severity="danger"
+            />
+          </template>
+        </Column>
+      </DataTable>
 
+        <Button 
+          v-if="!isEditing" 
+          icon="pi pi-plus" 
+          class="p-mt-2 p-button-rounded p-button-circle" 
+          @click="toggleCreateForm"
+          style="width: 3rem; height: 3rem;"
+        />
 
+      <div v-if="isCreating || isEditing" style="margin-top: 20px;">
+        <h3 style="color: white;">{{ isEditing ? 'Edit' : 'Create' }} Working Time</h3>
+        <form @submit.prevent="isEditing ? updateWorkingTime() : createWorkingTime()">
+          <div style="margin-bottom: 15px;">
+            <input v-model="currentWorkingTime.start" type="datetime-local" required placeholder="Start Time" style="width: 100%; padding: 8px;" />
+          </div>
 
-    <DataTable :value="workingTimes" showGridlines responsiveLayout="scroll">
-      
-      <Column field="id" header="ID"></Column>
-      
-      
-      <Column field="start" header="Start Time"></Column>
+          <div style="margin-bottom: 15px;">
+            <input v-model="currentWorkingTime.end" type="datetime-local" required placeholder="End Time" style="width: 100%; padding: 8px;" />
+          </div>
 
-      
-      <Column field="end" header="End Time"></Column>
-
-      
-      <Column header="Actions">
-        <template #body="slotProps">
-          <Button
-            icon="pi pi-pencil"
-            class="p-mr-2"
-            text
-            @click="editWorkingTime(slotProps.data)"
-            severity="info"
-          />
-          <Button
-            icon="pi pi-trash"
-            text
-            @click="deleteWorkingTime(slotProps.data.id)"
-            severity="danger"
-          />
-        </template>
-      </Column>
-    </DataTable>
-
- 
- <Button v-if="!isEditing" icon="pi pi-plus" class="p-mt-2" @click="toggleCreateForm" />
-
-
-<div v-if="isCreating || isEditing">
-  <h3>{{ isEditing ? 'Edit' : 'Create' }} Working Time</h3>
-  <form @submit.prevent="isEditing ? updateWorkingTime() : createWorkingTime()">
-    <input v-model="currentWorkingTime.start" type="datetime-local" required placeholder="Start Time" />
-    <input v-model="currentWorkingTime.end" type="datetime-local" required placeholder="End Time" />
-    <Button label="Submit" icon="pi pi-check" type="submit" class="p-mt-2" />
-    <Button label="Cancel" icon="pi pi-times" class="p-button-secondary p-ml-2" @click="cancelForm" />
-  </form>
-</div>
-</div>
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <Button label="Submit" icon="pi pi-check" type="submit" class="p-mt-2" />
+            <Button label="Cancel" icon="pi pi-times" class="p-button-secondary p-ml-2" @click="cancelForm" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
-
