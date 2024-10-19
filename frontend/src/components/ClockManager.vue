@@ -2,7 +2,7 @@
     <div id="ClockManager" class="flex-col m-3 w-1/2 h-5/6 bg-[#4E4E4E] rounded-[10px] p-5">
             <div class="flex justify-between">
                 <h1 class="text-[25px] text-white">My Clocks</h1>
-                <button @click="clock" class="w-[112px] h-[33px] rounded-[8px] bg-[#DBADFF] border-[2px] border-[#E7C9FF] drop-shadow-xl hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300" ><p class="font-inter font-normal text-[14px]">Clock in 📝</p></button>
+                <button @click="clock" class="mt-0 w-[112px] h-[33px] rounded-[8px] bg-[#DBADFF] border-[2px] border-[#E7C9FF] drop-shadow-xl hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300" ><p class="font-inter font-normal text-[14px]">Clock in 📝</p></button>
             </div>
             <div class="flex-col mt-6 ml-2">
                 <h2 class="text-[15px]  text-white border-b-[1px] border-white" >{{ formatDayMonth(startDateTime) }}</h2>
@@ -12,10 +12,22 @@
                     </div>
                     <div v-else class="flex-col justify-center items-center w-11/12">
                         <div v-for="(clock, i) in clocksDay" :key="i" class="flex p-1 justify-between">
-                            <p v-if="i === 0" > Start</p>
-                            <p v-else-if="i === clocksDay.length-1" >End</p>
-                            <p v-else-if="clock.status">Break End</p>
-                            <p v-else>Break Start</p>
+                            <div v-if="i === 0" class="flex items-center gap-3" >
+                                <font-awesome-icon :icon="['fas', 'person-walking']" size="2xl"/>
+                                <p>Start</p>
+                            </div>
+                            <div v-else-if="i === clocksDay.length-1" class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fas', 'person-walking-arrow-right']" size="2xl"/>
+                                <p>End</p>
+                            </div>
+                            <div v-else-if="clock.status" class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fa', 'xmark']" size="2xl"/>
+                                <p>Break End</p>
+                            </div>
+                            <div v-else class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fas', 'mug-saucer']" size="lg"/>
+                                <p>Break Start</p>
+                            </div>
                             <p>{{ formatHours(clock.time) }}</p>
                         </div>
                 </div>
