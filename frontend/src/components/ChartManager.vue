@@ -1,11 +1,20 @@
 <template>
-  <div>
-    <h2 class="text-center font-bold mb-8">Statistics for User {{ userId }}</h2>
-
-    <Chart type="bar" :data="chartBarData" :options="chartOptions" style="width: 600px; height: 400px;" />
-    <Chart type="bar" :data="chartWeeklyData" :options="chartWeeklyOptions" style="width: 600px; height: 400px;" />
-    <Chart type="bar" :data="chartDailyData" :options="chartDailyOptions" style="width: 600px; height: 400px;" /> <!-- Daily Chart -->
-    <Chart type="doughnut" :data="chartPieData" :options="chartPieOptions" style="width: 600px; height: 400px;" />
+  <div id="ChartManager" class="">
+    <div class="flex justify-between m-2">
+      <h2 class="text-left text-[25px] font-bold text-white ">Statistics for User {{ userId }}</h2>
+      <button class="mt-0 border-[#DBADFF] border-[2px] drop-shadow-xl hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300 text-white">Go to Profil</button>
+    </div>
+    <div class="flex justify-center gap-36  p-5">
+      <Chart class=" flex justify-center " type="bar" :data="chartDailyData" :options="chartDailyOptions" style="width: 500px; height: 200px;" /> <!-- Daily Chart -->
+      <Chart class="flex justify-center " type="bar" :data="chartWeeklyData" :options="chartWeeklyOptions" style="width: 500px; height: 200px;" />
+    </div>
+    <div class="flex justify-center items-center gap-36">
+      <Chart class="flex justify-center" type="bar" :data="chartBarData" :options="chartOptions" style="width: 500px; height: 200px;" />
+      <div class="flex justify-center items-center gap-2">
+      <Chart class="flex justify-center" type="doughnut" :data="chartPieData" :options="chartPieOptions" style="width: 300px; height: 300px;" />
+      <p class="text-[rgba(255,255,255,0.8)] text-[20px] font-Inter font-extralight text-right">Attendance Rates<br/> By Month %</p>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -13,6 +22,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axiosInstance from '../../axios.js';
+// import { Title } from 'chart.js';
 
 function getWorkingDaysInMonth(year, month) {
   let workingDays = 0;
@@ -33,44 +43,93 @@ function getWeekNumber(date) {
   return Math.ceil((days + startDate.getDay() + 1) / 7);
 }
 
+function getChartOptions(title) {
+  return {
+  responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { 
+          display: true, 
+          text: title, 
+          color: 'white',
+          font: {
+            family: 'Inter',
+            size: 20,
+            weight: 'lighter',
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: 'white',
+            font: {
+              family: 'Inter',
+              size: 9,
+              weight: 'lighter',
+            },
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          },
+        },
+        y: {
+          ticks: {
+            color: 'white',
+            font: {
+              family: 'Inter',
+              size: 9,
+              weight: 'lighter',
+            },
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.1)'
+          },
+        },
+      },
+};
+}
+
+function createDataset (label, backgroundColor, borderColor) {
+  return {
+    label: label,
+          backgroundColor: backgroundColor,
+          borderColor: borderColor,
+          borderWidth: 2,
+          hoverBackgroundColor: borderColor,
+          hoverBorderColor: '#ffffff',
+          data: []
+  };
+
+}
+
 export default {
   setup() {
     const route = useRoute();
     const userId = route.params.user_id;
 
-    const chartBarData = ref({
+    //Chart TOTAL WORKING HOURS BY DAY
+    const chartDailyData = ref({
       labels: [],
-      datasets: [
-        {
-          label: 'Total Working Hours',
-          backgroundColor: '#42A5F5',
-          data: []
-        }
-      ]
+      datasets: [createDataset('Total Working Hours by Day', 'rgba(219, 173, 255, 0.2)', 'rgba(219, 173, 255, 1)')]
     });
+    const chartDailyOptions = ref(getChartOptions('Total Working Hours by Day'));
 
+    //Chart TOTAL WORKING HOURS BY WEEK
     const chartWeeklyData = ref({
       labels: [],
-      datasets: [
-        {
-          label: 'Total Working Hours by Week',
-          backgroundColor: '#FF6384',
-          data: []
-        }
-      ]
+      datasets: [createDataset('Total Working Hours by Week', 'rgba(255, 156, 216, 0.3)', 'rgba(255, 156, 216, 1)')]
     });
+    const chartWeeklyOptions = ref(getChartOptions('Total Working Hours by Week'));
 
-    const chartDailyData = ref({
-      labels: [], // Updated to store specific dates in the week
-      datasets: [
-        {
-          label: 'Total Working Hours by Day',
-          backgroundColor: '#FFCE56',
-          data: []
-        }
-      ]
+//Chart TOTAL WORKING HOURS BY MONTH
+    const chartBarData = ref({
+      labels: [],
+      datasets: [createDataset('Total Working Hours by Month', 'rgba(255, 221, 103, 0.2)', 'rgba(255, 221, 103, 1)')]
     });
-
+    const chartOptions = ref(getChartOptions('Total Working Hours by Month'));
+    
+    // Chart DOUGHNUT ATTENDANCE RATES BY MONTH
     const chartPieData = ref({
       labels: [
         'Red',
@@ -89,69 +148,93 @@ export default {
       datasets: [{
         label: 'Attendance rates',
         data: [],
+        // backgroundColor: [
+        //   'rgb(255, 0, 0)',
+        //   'rgb(54, 162, 235)',
+        //   'rgb(0,255,0)',
+        //   'rgb(255, 165, 0)',
+        //   'rgb(128, 0, 128)',
+        //   'rgb(0,255,255)',
+        //   'rgb(255,0,255)',
+        //   'rgb(255,255,0)',
+        //   'rgb(0,255,0)',
+        //   'rgb(255,192,203)',
+        //   'rgb(0,128,128)',
+        //   'rgb(165,42,42)'
+        // ],
         backgroundColor: [
-          'rgb(255, 0, 0)',
-          'rgb(54, 162, 235)',
-          'rgb(0,255,0)',
-          'rgb(255, 165, 0)',
-          'rgb(128, 0, 128)',
-          'rgb(0,255,255)',
-          'rgb(255,0,255)',
-          'rgb(255,255,0)',
-          'rgb(0,255,0)',
-          'rgb(255,192,203)',
-          'rgb(0,128,128)',
-          'rgb(165,42,42)'
+          'rgba(255, 220, 103, 0.4)',
+          'rgba(255, 156, 216, 0.4)',
+          'rgba(219, 173, 255, 0.4)',
+          'rgba(102, 204, 255, 0.4)',
+          'rgba(255, 153, 102, 0.4)',
+          'rgba(153, 255, 153, 0.4)',
+          'rgba(0, 144, 255, 0.4)',
+          'rgba(255, 102, 204, 0.4)',
+          'rgba(204, 102, 255, 0.4)',
+          'rgba(102, 255, 204, 0.4)',
+          'rgba(255, 102, 102, 0.4)',
+          'rgba(102, 255, 153, 0.4)'
         ],
-        hoverOffset: 4
+        borderColor: [
+          'rgba(255, 220, 103, 1)',
+          'rgba(255, 156, 216, 1)',
+          'rgba(219, 173, 255, 1)',
+          'rgba(102, 204, 255, 1)',
+          'rgba(255, 153, 102, 1)',
+          'rgba(153, 255, 153, 1)',
+          'rgba(0, 144, 255, 1)',
+          'rgba(255, 102, 204, 1)',
+          'rgba(204, 102, 255, 1)',
+          'rgba(102, 255, 204, 1)',
+          'rgba(255, 102, 102, 1)',
+          'rgba(102, 255, 153, 1)'
+        ],
+        borderWidth: 2, 
+        spacing: 15,
+        hoverOffset: 35,
+        hoverBackgroundColor: [
+          'rgba(255, 220, 103, 1)',
+          'rgba(255, 156, 216, 1)',
+          'rgba(219, 173, 255, 1)',
+          'rgba(102, 204, 255, 1)',
+          'rgba(255, 153, 102, 1)',
+          'rgba(153, 255, 153, 1)',
+          'rgba(0, 144, 255, 1)',
+          'rgba(255, 102, 204, 1)',
+          'rgba(204, 102, 255, 1)',
+          'rgba(102, 255, 204, 1)',
+          'rgba(255, 102, 102, 1)',
+          'rgba(102, 255, 153, 1)'
+        ],
       }]
     });
-
-    const chartOptions = ref({
+        const chartPieOptions = ref({
       responsive: true,
       plugins: {
-        legend: { position: 'top' },
-        title: { display: true, text: 'Total Working Hours per Month' }
-      }
-    });
-
-    const chartWeeklyOptions = ref({
-      responsive: true,
-      plugins: {
-        legend: { position: 'top' },
-        title: { display: true, text: 'Total Working Hours per Week' }
-      }
-    });
-
-    const chartDailyOptions = ref({
-      responsive: true,
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Days of the Week'
+        legend: { 
+          position: 'right',
+          labels: {
+            color: 'white',
+            font: {
+              family: 'Inter',
+              size: 12,
+              weight: 'lighter',
+            }
           }
         },
-        y: {
-          title: {
-            display: true,
-            text: 'Hours Worked'
-          }
+        title: { 
+          display: false,
+          position: 'right', 
+          text: 'Attendance Rates By Month %',
+          color: 'white',
+          font: {
+            family: 'Inter',
+            size: 20,
+            weight: 'lighter',
         }
-      },
-      plugins: {
-        legend: { position: 'top' },
-        title: { display: true, text: 'Total Working Hours by Day' }
       }
-    });
-
-    const chartPieOptions = ref({
-      responsive: true,
-      plugins: {
-        legend: { position: 'top' },
-        title: { display: true, text: 'Attendance rates per Month %' }
-      }
-    });
+  }});
 
     const fetchWorkingTimes = async () => {
       try {
@@ -237,3 +320,7 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+</style>
