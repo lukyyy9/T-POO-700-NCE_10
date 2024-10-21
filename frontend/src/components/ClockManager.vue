@@ -1,12 +1,12 @@
 <template>
-    <div id="ClockManager" class="flex-col m-3 w-1/2 h-5/6 bg-[#4E4E4E] rounded-[10px] p-5">
+    <div id="ClockManager" class="bg-frame rounded-xl p-5 w-[50%]">
             <div class="flex justify-between">
-                <h1 class="text-[25px] text-white">My Clocks</h1>
-                <button @click="clock" class="w-[112px] h-[33px] rounded-[8px] bg-[#DBADFF] border-[2px] border-[#E7C9FF] drop-shadow-xl hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300" ><p class="font-inter font-normal text-[14px]">Clock in 📝</p></button>
+                <h2>My Clocks</h2>
+                <button @click="clock" class="bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock in 📝</button>
             </div>
-            <div class="flex-col mt-6 ml-2">
-                <h2 class="text-[15px]  text-white border-b-[1px] border-white" >{{ formatDayMonth(startDateTime) }}</h2>
-                <div class="flex justify-center p-2 bg-[#656565] rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2">
+            <div>
+                <h2 class="text-[15px]  text-white border-b-2 border-white" >{{ formatDayMonth(startDateTime) }}</h2>
+                <div class="flex justify-center p-2 bg-subFrame rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2">
                     <div v-if="clocksDay.length === 0" class="pt-2 pb-2 text-[12px]">
                         <p>No clocks available for today !</p>
                     </div>
