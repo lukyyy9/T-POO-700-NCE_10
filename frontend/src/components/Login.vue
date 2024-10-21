@@ -9,7 +9,7 @@
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" v-model="username">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" v-model="password">
+                <input type="password" id="password" name="password" v-model="password" @keyup.enter="signin">
             </div>
             <button @click="signin" class="bg-primary text-black border-2 border-primaryAccent hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300 mt-4">
                 Sign in 🦇

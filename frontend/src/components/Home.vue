@@ -1,6 +1,9 @@
 <template>
     <div id="home">
-        <h1 class="ml-3">Hello Maietry 👋</h1>
+        <div class="flex justify-between">
+            <h1 class="ml-3">Hello Maietry 👋</h1>
+            <button class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
+        </div>
         <div class="flex flex-col gap-y-3"> <!-- ONLY IF THE USER IS A USER OR A MANAGER -->
             <div class="flex gap-x-3">
                 <ClockManager />
