@@ -11,7 +11,7 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password">
             </div>
-            <button class="bg-primary text-black border-2 border-primaryAccent hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300">
+            <button class="bg-primary text-black border-2 border-primaryAccent hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300 mt-4">
                 Sign in 🦇
             </button>
         </div>

@@ -3,15 +3,15 @@ import WorkingTime from '@/components/WorkingTime.vue'
 import ClockManager from '@/components/ClockManager.vue'
 import ChartManager from '@/components/ChartManager.vue'
 import Login from '@/components/Login.vue'
+import Home from '@/components/Home.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      //path: '/workingTime/:user_id',
-     // name: 'Working Times',
-      //component: WorkingTimes,
-      //props: true
+      path: '/',
+      name: 'Home',
+      component: Home,
     },
     {
       path: '/workingTime/:user_id',

@@ -12,7 +12,8 @@ export default {
         secondaryAccent: '#E7C9FF',
         mainFrame: '#303030',
         frame: '#4E4E4E',
-        red: '#FF4141',
+        subFrame: '#656565',
+        red: '#FF4141'
       },
     },
   },
