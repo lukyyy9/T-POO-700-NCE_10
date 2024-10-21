@@ -39,6 +39,22 @@ defmodule TimemanagerWeb.UserController do
     end
   end
 
+  def login(conn, %{"user" => %{"username" => username, "password" => password}}) do
+    case UserContext.authenticate_user(username, password) do
+      {:ok, user} ->
+        {:ok, token, _claims} = Timemanager.UserContext.Guardian.encode_and_sign(user, %{})
+        conn
+        |> put_status(:ok)
+        |> json(%{token: token})
+
+      {:error, reason} ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{error: to_string(reason)})
+    end
+  end
+
+
   def delete(conn, %{"id" => id}) do
     user = UserContext.get_user!(id)
 

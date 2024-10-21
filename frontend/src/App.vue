@@ -11,7 +11,7 @@
   </script>
 
 <template>
-  <div id="app" class="bg-primary w-full p-3 flex flex-col">
+  <div id="app" class="from-primary to-[#EFD67F] bg-gradient-to-r w-full p-3 flex flex-col">
     <div class="flex justify-between mx-3">
       <img src="/logoFull.png" alt="Logo" class="h-9">
       <User @toggle-user-menu="toggleUserMenu" />

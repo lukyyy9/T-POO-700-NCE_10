@@ -5,8 +5,21 @@ defmodule Timemanager.UserContext do
 
   import Ecto.Query, warn: false
   alias Timemanager.Repo
-
   alias Timemanager.UserContext.User
+  alias Pbkdf2
+
+  @doc """
+  Gets a single user by username.
+
+  ## Examples
+
+      iex> get_user_by_username("username")
+      %User{}
+
+  """
+  def get_user_by_username(username) do
+    Repo.get_by(User, username: username)
+  end
 
   @doc """
   Gets a single user by email or username.
@@ -64,9 +77,18 @@ defmodule Timemanager.UserContext do
 
   """
   def create_user(attrs \\ %{}) do
+    IO.inspect(attrs, label: "Attributes")
+
     %User{}
     |> User.changeset(attrs)
+    |> put_password_hash(attrs["password"])  # Correctly handle password
     |> Repo.insert()
+  end
+
+  defp put_password_hash(changeset, nil), do: changeset
+  defp put_password_hash(changeset, password) do
+    hash = Pbkdf2.add_hash(password)
+    Ecto.Changeset.put_change(changeset, :password_hash, hash.password_hash)
   end
 
   @doc """
@@ -85,6 +107,21 @@ defmodule Timemanager.UserContext do
     user
     |> User.changeset(attrs)
     |> Repo.update()
+  end
+
+  def authenticate_user(username, plain_text_password) do
+    query = from u in User, where: u.username == ^username
+    case Repo.one(query) do
+      nil ->
+        Pbkdf2.no_user_verify()
+        {:error, :invalid_credentials}
+      user ->
+        if Pbkdf2.verify_pass(plain_text_password, user.password_hash) do
+          {:ok, user}
+        else
+          {:error, :invalid_credentials}
+        end
+    end
   end
 
   @doc """
