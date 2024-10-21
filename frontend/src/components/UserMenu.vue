@@ -3,7 +3,7 @@
         <div class="bg-mainFrame border border-gray-600 rounded-t-lg px-5 py-2 flex justify-center">
             Edit my profile
         </div>
-        <div class="bg-red text-mainFrame border border-gray-600 rounded-b-lg px-5 py-2 flex justify-center">
+        <div class="bg-red text-mainFrame border border-gray-600 rounded-b-lg px-5 py-2 flex justify-center" @click="removePersist">
             Logout
         </div>
     </div>
@@ -14,11 +14,15 @@ export default {
     name: 'UserMenu',
     data() {
         return {
-            // Component data goes here
+            token: null
         };
     },
     methods: {
-        // Component methods go here
+        removePersist() {
+            localStorage.removeItem('token');
+            this.token = '';
+            this.$router.push('/login')
+        }
     },
     computed: {
         // Computed properties go here

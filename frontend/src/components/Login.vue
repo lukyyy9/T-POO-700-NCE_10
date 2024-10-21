@@ -7,11 +7,11 @@
             </h1>
             <div class="flex flex-col justify-start">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="username" v-model="username">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" v-model="password">
             </div>
-            <button class="bg-primary text-black border-2 border-primaryAccent hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300">
+            <button @click="signin" class="bg-primary text-black border-2 border-primaryAccent hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300">
                 Sign in 🦇
             </button>
         </div>
@@ -20,19 +20,45 @@
 
 <script>
 import axiosInstance from '../../axios.js';
+import { jwtDecode } from "jwt-decode";
+
 export default {
     name: 'Login',
     data() {
         return {
-            //data
+            username: '',
+            password:'',
+            token: null,
         };
     },
     methods: {
-        //methods
+        async signin() {
+            try {
+                const response = await axiosInstance.post('login', {
+                user: {
+                    username: this.username,
+                    password: this.password,
+            }
+            });
+            const token = response.data.token;
+            console.log('login success', token);
+            localStorage.setItem('token', token);
+            const decoded = jwtDecode(token);
+            console.log('decoded', decoded);
+            if(decoded) {
+                this.$router.push('/')
+            }
+                
+            } catch(error) {
+                    console.error('Login failed:', error);
+                }
+        },
     },
     mounted() {
-        //mounted
-    }
+        if (localStorage.getItem('token')) {
+            this.token = localStorage.getItem('token');
+        }
+    },
 };
 </script>
 
