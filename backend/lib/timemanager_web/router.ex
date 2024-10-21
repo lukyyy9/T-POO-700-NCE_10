@@ -10,6 +10,7 @@ defmodule TimemanagerWeb.Router do
 
     # Users
     get "/workingTime/:user_id/:id", WorkingTimeController, :get_by_user_id_and_id
+    post "/login", UserController, :login
     resources "/users", UserController, except: [:new, :edit]
 
     # WorkingTime

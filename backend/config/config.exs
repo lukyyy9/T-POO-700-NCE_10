@@ -64,3 +64,9 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+config :timemanager, Timemanager.UserContext.Guardian,
+  issuer: "timemanager",
+  secret_key: "5rPl8vgg9xzk3YXCAwgfHtFIOzDbWGSjzmLEMhYD/TqjKzN6ZfQFKrv4pQ8guGhP"
+
+config :pbkdf2_elixir, rounds: 100_000, length: 64, digest: :sha512
