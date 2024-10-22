@@ -18,7 +18,7 @@ defmodule TimemanagerWeb.ClockController do
 
   def create(conn, %{"user_id" => user_id}) do
     user_id = String.to_integer(user_id)
-    current_time = NaiveDateTime.utc_now()
+    current_time = NaiveDateTime.utc_now()|> NaiveDateTime.add(2 * 3600)
 
     last_clocking = ClockContext.get_last_clocking(user_id)
 

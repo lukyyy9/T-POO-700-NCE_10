@@ -13,7 +13,8 @@ export default {
         mainFrame: '#303030',
         frame: '#4E4E4E',
         subFrame: '#656565',
-        red: '#FF4141'
+        red: '#FF4141',
+        lightGrey : 'rgba(255,255,255,0.8)',
       },
     },
   },

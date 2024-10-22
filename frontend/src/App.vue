@@ -16,7 +16,7 @@
       <img src="/logoFull.png" alt="Logo" class="h-9">
       <User @toggle-user-menu="toggleUserMenu" />
     </div>
-    <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative">
+    <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative overflow-y-scroll">
       <div class="flex justify-between">
         <h1 class="ml-3">Hello Maietry 👋</h1>
         <button class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
