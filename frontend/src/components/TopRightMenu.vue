@@ -1,6 +1,6 @@
 <template>
     <div id="top-right-menu">
-        <button @click="goGraph" class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
+        <button v-if="isHomePage" @click="goGraph" class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
         <button v-if="!isHomePage && !isLoginPage" @click="goBack" class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go back</button>
     </div>
 </template>
