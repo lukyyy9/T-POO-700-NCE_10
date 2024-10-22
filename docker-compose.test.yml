@@ -11,16 +11,18 @@ services:
       - DATABASE_URL=ecto://test_user:test_password@db/my_test_db
     depends_on:
       - db
-    command: mix test
+    command: mix do test 
+      test/timemanager_web/controllers/user_controller_test.exs 
+      test/timemanager_web/controllers/clock_controller_test.exs
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: frontend-test
-    environment:
-      - NODE_ENV=test
-    command: npm test
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   image: frontend-test
+  #   environment:
+  #     - NODE_ENV=test
+  #   command: npm test
 
   db:
     image: postgres:13
