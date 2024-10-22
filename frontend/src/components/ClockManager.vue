@@ -12,10 +12,22 @@
                     </div>
                     <div v-else class="flex-col justify-center items-center w-11/12">
                         <div v-for="(clock, i) in clocksDay" :key="i" class="flex p-1 justify-between">
-                            <p v-if="i === 0" > Start</p>
-                            <p v-else-if="i === clocksDay.length-1" >End</p>
-                            <p v-else-if="clock.status">Break End</p>
-                            <p v-else>Break Start</p>
+                            <div v-if="i === 0" class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fas', 'person-walking']" size="2xl"/>
+                                <p> Start</p>
+                            </div>
+                            <div v-else-if="i === clocksDay.length-1 && clocksDay.length >= 4" class="flex items-center gap-2">
+                                <font-awesome-icon :icon="['fa', 'xmark']" size="2xl"/>
+                                <p>End</p>
+                            </div>
+                            <div v-else-if="clock.status === true" class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fa', 'xmark']" size="2xl"/>
+                                <p>Break End</p>
+                            </div>
+                            <div v-else class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fas', 'mug-saucer']" size="lg"/>
+                                <p>Break Start</p>
+                            </div>
                             <p>{{ formatHours(clock.time) }}</p>
                         </div>
                 </div>
@@ -27,6 +39,7 @@
 <script>
 import axiosInstance from '../../axios.js';
 import moment from 'moment';
+import { getUserId } from '@/utils/user.js';
 
 export default {
     name: 'ClockManager',
@@ -35,13 +48,20 @@ export default {
             clocksDay: [],
             startDateTime: null,
             clockIn: false,
+            userId: null
              };
     },
     methods: {
         refresh() {
-            const user_id = this.$route.params.user_id;
-            
-            axiosInstance.get(`clocks/${user_id}`)
+            const savedToken = localStorage.getItem('token');
+            if(savedToken) {
+                this.userId = getUserId(savedToken);
+                console.log('userId', this.userId);
+            } else {
+                console.log('to token found');
+            }
+           
+            axiosInstance.get(`clocks/${this.userId}`)
                 .then(response => {  
                     const clocksData = response.data.data;
                     console.log('data', response.data.data)
@@ -76,8 +96,7 @@ export default {
             return moment(date).format('HH:mm');
         },
         clock() {
-            const user_id = this.$route.params.user_id;
-            axiosInstance.post(`clocks/${user_id}`)
+            axiosInstance.post(`clocks/${this.userId}`)
                 .then(response => {
                     const newClock = response.data.data;
                     this.startDateTime = moment(newClock.time).format('YYYY-MM-DD HH:mm:ss');
@@ -95,7 +114,6 @@ export default {
     },
     mounted() {
         this.refresh();
-        this.clocksDay;
     }
 };
 </script>

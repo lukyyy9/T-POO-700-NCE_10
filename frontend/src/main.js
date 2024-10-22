@@ -12,7 +12,11 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Noir from './presets/Noir';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faHouse, faPersonWalking, faPersonWalkingArrowRight, faMugSaucer, faMugHot, faXmark,faBell } from '@fortawesome/free-solid-svg-icons';
 
+library.add(faHouse, faPersonWalking, faPersonWalkingArrowRight, faMugSaucer, faMugHot, faXmark, faBell);
 const app = createApp(App);
 
 
@@ -28,7 +32,7 @@ app.use(PrimeVue, {
  });
 
 
-
+app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('Button', Button);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
