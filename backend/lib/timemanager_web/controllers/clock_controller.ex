@@ -25,6 +25,8 @@ defmodule TimemanagerWeb.ClockController do
     user_id = String.to_integer(user_id)
     current_time = NaiveDateTime.utc_now()|> NaiveDateTime.add(2 * 3600)
 
+    last_clocking = ClockContext.get_last_clocking(user_id)
+
     new_status =
       case last_clocking do
         nil -> true
