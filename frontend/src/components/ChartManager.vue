@@ -1,5 +1,5 @@
 <template>
-  <div id="ChartManager" class="flex flex-col">
+  <div id="ChartManager" class="flex flex-col bg-frame rounded-xl p-5 w-[100%]">
     <div class="flex justify-between m-2">
       <h2>My Statistics</h2>
     </div>
