@@ -60,7 +60,8 @@ defmodule Timemanager.MixProject do
       {:cors_plug, "~> 3.0"},
       {:guardian, "~> 2.0"},
       {:pbkdf2_elixir, "~> 1.3"},
-      {:mox, "~> 1.2", only: :test}
+      {:mox, "~> 1.2", only: :test},
+      {:ex_unit_reporter, "~> 0.1", only: :test}
     ]
   end
 
