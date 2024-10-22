@@ -23,7 +23,21 @@ defmodule TimemanagerWeb.ClockJSON do
     %{
       id: clock.id,
       status: clock.status,
-      time: clock.time
+      time: clock.time,
+      user_id: clock.user_id
     }
+  end
+
+  def index(%Clock{} = clock) do
+    %{
+      id: clock.id,
+      status: clock.status,
+      time: clock.time,
+      user_id: clock.user_id
+    }
+  end
+
+  def index(clocks) when is_list(clocks) do
+    Enum.map(clocks, &index/1)
   end
 end

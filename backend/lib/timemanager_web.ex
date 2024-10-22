@@ -48,6 +48,21 @@ defmodule TimemanagerWeb do
     end
   end
 
+  def view do
+    quote do
+      use Phoenix.View,
+        root: "lib/timemanager_web/templates",
+        namespace: TimemanagerWeb
+
+      import Phoenix.Controller,
+        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+
+      unquote(verified_routes())
+      import TimemanagerWeb.ErrorHelpers
+      import TimemanagerWeb.Gettext
+    end
+  end
+
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,

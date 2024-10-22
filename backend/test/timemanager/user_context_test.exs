@@ -21,11 +21,11 @@ defmodule Timemanager.UserContextTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{username: "some username", email: "some email"}
+      valid_attrs = %{username: "some username", email: "userTest@example.com"}
 
       assert {:ok, %User{} = user} = UserContext.create_user(valid_attrs)
       assert user.username == "some username"
-      assert user.email == "some email"
+      assert user.email == "userTest@example.com"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -34,11 +34,11 @@ defmodule Timemanager.UserContextTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{username: "some updated username", email: "some updated email"}
+      update_attrs = %{username: "some updated username", email: "userTestUpdate@example.com"}
 
       assert {:ok, %User{} = user} = UserContext.update_user(user, update_attrs)
       assert user.username == "some updated username"
-      assert user.email == "some updated email"
+      assert user.email == "userTestUpdate@example.com"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
