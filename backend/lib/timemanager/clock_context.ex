@@ -7,6 +7,7 @@ defmodule Timemanager.ClockContext do
   alias Timemanager.Repo
 
   alias Timemanager.ClockContext.Clock
+  @behaviour Timemanager.ClockContextBehaviour
 
   def get_by_user_id(user_id) do
     query = from(c in Clock, where: c.user_id == ^user_id)
@@ -24,6 +25,11 @@ defmodule Timemanager.ClockContext do
   """
   def list_clocks do
     Repo.all(Clock)
+  end
+
+  # Récupérer une horloge par ID (sans lever d'exception)
+  def get_clock(id) do
+    Repo.get(Clock, id)
   end
 
   @doc """
@@ -110,9 +116,9 @@ defmodule Timemanager.ClockContext do
   def get_last_clocking(user_id) do
     Clock
     |> where([c], c.user_id == ^user_id)
-    |> order_by(desc: :inserted_at)  # ou `order_by(desc: :time)` selon ta logique
+    # ou `order_by(desc: :time)` selon ta logique
+    |> order_by(desc: :inserted_at)
     |> limit(1)
     |> Repo.one()
   end
-
 end

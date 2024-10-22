@@ -21,6 +21,7 @@ defmodule TimemanagerWeb.Router do
     # Clocks
     get "/clocks/:user_id", ClockController, :get_by_user_id
     post "/clocks/:user_id", ClockController, :create
+    resources("/clocks", ClockController)
     #resources "/clocks", ClockController, except: [:new, :edit, :create, :show, :update, :delete, :index]
   end
 
