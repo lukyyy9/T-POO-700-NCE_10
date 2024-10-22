@@ -6,6 +6,7 @@ import ClockManager from '@/components/ClockManager.vue';
 import ChartManager from '@/components/ChartManager.vue';
 import Login from '@/components/Login.vue';
 import Home from '@/components/Home.vue';
+import EditProfile from '@/components/EditProfile.vue';
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  {
+    path: '/editProfile',
+    name: 'EditProfile',
+    component: EditProfile
+  }
 ];
 
 const router = createRouter({
