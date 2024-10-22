@@ -23,42 +23,42 @@ import axiosInstance from '../../axios.js';
 import { jwtDecode } from "jwt-decode";
 
 export default {
-    name: 'Login',
-    data() {
-        return {
-            username: '',
-            password:'',
-            token: null,
-        };
-    },
-    methods: {
-        async signin() {
-            try {
-                const response = await axiosInstance.post('login', {
-                user: {
-                    username: this.username,
-                    password: this.password,
-            }
-            });
-            const token = response.data.token;
-            console.log('login success', token);
-            localStorage.setItem('token', token);
-            const decoded = jwtDecode(token);
-            console.log('decoded', decoded);
-            if(decoded) {
-                this.$router.push('/')
-            }
-                
-            } catch(error) {
-                    console.error('Login failed:', error);
-                }
-        },
-    },
-    mounted() {
-        if (localStorage.getItem('token')) {
-            this.token = localStorage.getItem('token');
+  name: 'Login',
+  data() {
+    return {
+      username: '',
+      password:'',
+      token: null,
+    };
+  },
+  methods: {
+    async signin() {
+      try {
+        const response = await axiosInstance.post('login', {
+          user: {
+            username: this.username,
+            password: this.password,
+          }
+        });
+        const token = response.data.token;
+        console.log('login success', token);
+        localStorage.setItem('token', token);
+        const decoded = jwtDecode(token);
+        console.log('decoded', decoded);
+        if(decoded) {
+          this.$router.push('/');
         }
+      } catch(error) {
+        console.error('Login failed:', error);
+      }
     },
+  },
+  mounted() {
+    const token = localStorage.getItem('token');
+    if (token && isTokenValid(token)) {
+      this.$router.push('/');
+    }
+  },
 };
 </script>
 

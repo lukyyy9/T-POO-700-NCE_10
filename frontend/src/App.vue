@@ -17,6 +17,10 @@
       <User @toggle-user-menu="toggleUserMenu" />
     </div>
     <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative">
+      <div class="flex justify-between">
+        <h1 class="ml-3">Hello Maietry 👋</h1>
+        <button class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
+      </div>
       <router-view />
     </div>
     <UserMenu v-if="showUserMenu" class="absolute top-12 right-3"/>
