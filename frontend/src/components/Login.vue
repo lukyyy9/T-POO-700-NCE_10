@@ -21,6 +21,7 @@
 <script>
 import axiosInstance from '../../axios.js';
 import { jwtDecode } from "jwt-decode";
+import { isTokenValid } from '@/utils/auth.js';
 
 export default {
   name: 'Login',

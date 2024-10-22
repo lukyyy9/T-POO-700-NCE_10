@@ -23,8 +23,7 @@ defmodule TimemanagerWeb.ClockController do
 
   def create(conn, %{"user_id" => user_id}) when not is_nil(user_id) do
     user_id = String.to_integer(user_id)
-    current_time = NaiveDateTime.utc_now()
-    last_clocking = clock_context().get_last_clocking(user_id)
+    current_time = NaiveDateTime.utc_now()|> NaiveDateTime.add(2 * 3600)
 
     new_status =
       case last_clocking do
