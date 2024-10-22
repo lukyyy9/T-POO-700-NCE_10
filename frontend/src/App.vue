@@ -1,14 +1,19 @@
 <script setup>
-  import { ref } from 'vue';
-  import User from './components/User.vue';
-  import UserMenu from './components/UserMenu.vue';
-  
-  const showUserMenu = ref(false);
-  
-  function toggleUserMenu() {
-      showUserMenu.value = !showUserMenu.value;
-  }
-  </script>
+import { ref } from 'vue';
+import User from './components/User.vue';
+import UserMenu from './components/UserMenu.vue';
+import TopRightMenu from './components/TopRightMenu.vue';
+
+const isMenuOpen = ref(false);
+
+function toggleUserMenu() {
+    isMenuOpen.value = !isMenuOpen.value;
+}
+
+function closeUserMenu() {
+    isMenuOpen.value = false;
+}
+</script>
 
 <template>
   <div id="app" class="from-primary to-[#EFD67F] bg-gradient-to-r w-full p-3 flex flex-col">
@@ -19,14 +24,13 @@
     <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative">
       <div class="flex justify-between">
         <h1 class="ml-3">Hello Maietry 👋</h1>
-        <button class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
+        <TopRightMenu />
       </div>
       <router-view />
     </div>
-    <UserMenu v-if="showUserMenu" class="absolute top-12 right-3"/>
+    <UserMenu v-if="isMenuOpen" :isMenuOpen="isMenuOpen" @close-menu="closeUserMenu" class="absolute top-12 right-3"/>
   </div>
 </template>
 
 <style scoped>
-/* Ajoutez ici les styles nécessaires */
 </style>
