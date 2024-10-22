@@ -16,8 +16,8 @@
                                 <font-awesome-icon :icon="['fas', 'person-walking']" size="2xl"/>
                                 <p> Start</p>
                             </div>
-                            <div v-else-if="i === clocksDay.length-1 && clocksDay.length >= 4" class="flex items-center gap-2">
-                                <font-awesome-icon :icon="['fa', 'xmark']" size="2xl"/>
+                            <div v-else-if="clocksDay.length % 2 === 0 && i === clocksDay.length-1" class="flex items-center gap-2">
+                                <font-awesome-icon :icon="['fas', 'person-walking-arrow-right']" size="2xl"/>
                                 <p>End</p>
                             </div>
                             <div v-else-if="clock.status === true" class="flex items-center gap-3">
@@ -64,12 +64,11 @@ export default {
             axiosInstance.get(`clocks/${this.userId}`)
                 .then(response => {  
                     const clocksData = response.data.data;
-                    console.log('data', response.data.data)
-                    if(response.data.data){
-                        const lastClock = clocksData[response.data.data.length - 1];
+                    console.log('data', clocksData);
+                    if(clocksData){
+                        const lastClock = clocksData[clocksData.length - 1];
                     this.startDateTime = moment(lastClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = lastClock.status;
-                    console.log('startDateTime:', this.startDateTime);
                     console.log('clockIn:', this.clockIn);
 
                     const currentDay = moment().format('DD MMMM YY');
@@ -101,10 +100,7 @@ export default {
                     const newClock = response.data.data;
                     this.startDateTime = moment(newClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = newClock.status;
-                    console.log('New Clock:', newClock);
-
                     this.clocksDay.push(newClock);
-
                 })
                 .catch(error => {
                     console.error('There was an error new Clock:', error);
