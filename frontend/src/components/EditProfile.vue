@@ -16,6 +16,7 @@
 <script>
 import axiosInstance from '../../axios.js';
 import { getUserId } from '@/utils/user';
+import { toast } from "@steveyuowo/vue-hot-toast";
 
 export default {
     name: 'EditProfile',
@@ -44,13 +45,22 @@ export default {
                 }
             };
 
-            try {
-                const response = await axiosInstance.put(`users/${userId}`, userData);
-                console.log('Profile updated successfully', response.data);
-                this.$router.push('/');
-            } catch (error) {
-                console.error('Error updating profile:', error);
-            }
+            toast.promise(new Promise(async (resolve, reject) => {
+                try {
+                    const response = await axiosInstance.put(`users/${userId}`, userData);
+                    console.log('Profile updated successfully', response.data);
+                    this.$router.push('/');
+                    resolve('Profile updated successfully!');
+                } catch (error) {
+                    console.error('Error updating profile:', error);
+                    reject(new Error('Error updating profile'));
+                }
+            }), {
+                success: 'Profile updated successfully!',
+                error: 'Error updating profile',
+                loading: 'Updating profile...',
+                position: 'top-center'
+            });
         }
     }
 };
