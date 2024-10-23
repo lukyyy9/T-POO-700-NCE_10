@@ -38,7 +38,7 @@ function closeUserMenu() {
     </div>
     <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative overflow-y-scroll">
       <div class="flex justify-between">
-        <h1 class="ml-3">Hello Maietry 👋</h1>
+        <h1 v-if=!isLoginPage class="ml-3">Hello Maietry 👋</h1>
         <TopRightMenu />
       </div>
       <router-view />
