@@ -6,7 +6,7 @@ export function getUserId(token) {
 
     try {
         const decoded = jwtDecode(token);
-        return decoded.sub || null;
+        return decoded.sub.id || null;
     } catch (error) {
         return null;
     }
@@ -17,7 +17,7 @@ export function getUserRole(token) {
 
     try {
         const decoded = jwtDecode(token);
-        return decoded.role || null;
+        return decoded.sub.role || null;
     } catch (error) {
         return null;
     }

@@ -1,6 +1,6 @@
 <template>
     <div v-if="route.path !== '/login'" id="User" @click="$emit('toggle-user-menu')">
-        <img src="/pfp.png" alt="Profile picture" class="h-9 rounded-full border-4 border-secondary shadow-mainFrame shadow">
+        <img src="/pfp.png" alt="Profile picture" class="h-9 rounded-full border-4 border-secondary shadow-mainFrame shadow hover:cursor-pointer">
     </div>
 </template>
 
