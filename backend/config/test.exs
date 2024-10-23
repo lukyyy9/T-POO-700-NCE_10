@@ -1,15 +1,5 @@
 import Config
 
-# Configure your database
-# Note: For mocked tests, you might not need this database configuration
-config :timemanager, Timemanager.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "10.73.189.233",
-  database: "timemanager_test#{System.get_env("MIX_TEST_PARTITION")}",
-  pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: System.schedulers_online() * 2
-
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :timemanager, TimemanagerWeb.Endpoint,
