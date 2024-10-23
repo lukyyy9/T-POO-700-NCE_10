@@ -150,7 +150,48 @@ defmodule Timemanager.UserContext do
       %Ecto.Changeset{data: %User{}}
 
   """
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
+ @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+  """
+  defmodule Timemanager.UserContext do
+
+    # Function to change user attributes
+    def change_user(%User{} = user, attrs \\ %{}) do
+      User.changeset(user, attrs)
+    end
+
+    # Function to create an admin user (role = 3)
+    @spec create_admin(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+    def create_admin(params) do
+      %User{}
+      |> User.changeset(params)
+      |> User.changeset_role(%{role: 3})  # Admin role as 3
+      |> Repo.insert()
+    end
+
+    # Function to set an existing user as admin (role = 3)
+    @spec set_admin_role(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+    def set_admin_role(user) do
+      user
+      |> User.changeset_role(%{role: 3})  # Admin role as 3
+      |> Repo.update()
+    end
+
+    # Function to create a manager user (role = 2)
+    @spec create_manager(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+    def create_manager(params) do
+      %User{}
+      |> User.changeset(params)
+      |> User.changeset_role(%{role: 2})  # Manager role as 2
+      |> Repo.insert()
+    end
+
+    # Function to set an existing user as manager (role = 2)
+    @spec set_manager_role(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+    def set_manager_role(user) do
+      user
+      |> User.changeset_role(%{role: 2})  # Manager role as 2
+      |> Repo.update()
+    end
   end
 end

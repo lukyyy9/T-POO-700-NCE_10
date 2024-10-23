@@ -7,6 +7,7 @@ defmodule Timemanager.UserContext.User do
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
+    field :role, :integer, default: 1
 
     timestamps()
   end
@@ -14,8 +15,8 @@ defmodule Timemanager.UserContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password])
-    |> validate_required([:username, :email])
+    |> cast(attrs, [:username, :email, :password, :role])
+    |> validate_required([:username, :email, :role])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)
     |> put_password_hash()
@@ -28,5 +29,12 @@ defmodule Timemanager.UserContext.User do
         hash = Pbkdf2.add_hash(password)
         put_change(changeset, :password_hash, hash.password_hash)
     end
+  end
+
+  @spec changeset_role(Ecto.Schema.t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
+  def changeset_role(user_or_changeset, attrs) do
+    user_or_changeset
+    |> Ecto.Changeset.cast(attrs, [:role])
+    |> Ecto.Changeset.validate_inclusion(:role, [1,2,3])
   end
 end
