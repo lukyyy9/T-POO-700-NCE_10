@@ -12,15 +12,22 @@ WORKDIR /app
 # Install Hex package manager.
 RUN mix local.hex --force
 
+# Install rebar (required for certain dependencies).
+RUN mix local.rebar --force
+
 # Install the dependencies.
 RUN mix deps.get
 
 # Compile the project.
 RUN mix do compile
 
+# Create a directory for test results
+RUN mkdir -p /app/test-results
+
 EXPOSE 4000
 
+# Modify entrypoint script to handle both production and test environments
 RUN chmod +x /app/entrypoint.sh
 
-# DOS2UNIX
-CMD ["/app/entrypoint.sh"]
+# Use a shell form of CMD to allow for environment variable substitution
+CMD ["/bin/sh", "-c", "if [ \"$MIX_ENV\" = \"test\" ]; then mix test --cover; else /app/entrypoint.sh; fi"]

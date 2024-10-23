@@ -60,8 +60,9 @@ defmodule Timemanager.MixProject do
       {:cors_plug, "~> 3.0"},
       {:guardian, "~> 2.0"},
       {:pbkdf2_elixir, "~> 1.3"},
-      {:mox, "~> 1.2", only: :test}
-    ]
+      {:mox, "~> 1.2", only: :test},
+      {:junit_formatter, "~> 3.1", only: [:test]}
+      ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

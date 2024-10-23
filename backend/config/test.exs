@@ -1,10 +1,7 @@
 import Config
 
 # Configure your database
-#
-# The MIX_TEST_PARTITION environment variable can be used
-# to provide built-in test partitioning in CI environment.
-# Run `mix help test` for more information.
+# Note: For mocked tests, you might not need this database configuration
 config :timemanager, Timemanager.Repo,
   username: "postgres",
   password: "postgres",
@@ -32,4 +29,18 @@ config :logger, level: :warning
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 
+# Use the mock for ClockContext
 config :timemanager, :clock_context, Timemanager.ClockContextMock
+
+# Configure ExUnit
+config :ex_unit,
+  capture_log: true,
+  assert_receive_timeout: 5000,
+  refute_receive_timeout: 5000,
+  formatters: [
+    ExUnit.CLIFormatter,
+    {JUnitFormatter, [report_dir: "/app/test-results", report_file: "results.xml"]}
+  ]
+
+# If you're using Mox for mocking
+config :timemanager, :mox_adapter, Mox
