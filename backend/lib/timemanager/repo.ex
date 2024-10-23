@@ -37,7 +37,11 @@ defmodule Timemanager.Repo do
     |> Keyword.put(:password, System.get_env("PGPASSWORD") || env_vars["PGPASSWORD"])
     |> Keyword.put(:database, System.get_env("PGDATABASE") || env_vars["PGDATABASE"])
     |> Keyword.put(:hostname, System.get_env("PGHOST") || env_vars["PGHOST"])
-    |> Keyword.put(:port, (System.get_env("PGPORT") || env_vars["PGPORT"]) |> String.to_integer)
+    |> Keyword.put(:port,
+    case System.get_env("PGPORT") || env_vars["PGPORT"] do
+      nil -> 5432  # Valeur par défaut si aucune variable n'est trouvée
+      port -> String.to_integer(port)
+    end)
 
     {:ok, config}
   end
