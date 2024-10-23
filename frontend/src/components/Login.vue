@@ -22,6 +22,7 @@
 import axiosInstance from '../../axios.js';
 import { jwtDecode } from "jwt-decode";
 import { isTokenValid } from '@/utils/auth.js';
+import { toast } from "@steveyuowo/vue-hot-toast";
 
 export default {
   name: 'Login',
@@ -34,24 +35,33 @@ export default {
   },
   methods: {
     async signin() {
-      try {
-        const response = await axiosInstance.post('login', {
-          user: {
-            username: this.username,
-            password: this.password,
+      toast.promise(new Promise(async (resolve, reject) => {
+        try {
+          const response = await axiosInstance.post('login', {
+            user: {
+              username: this.username,
+              password: this.password,
+            }
+          });
+          const token = response.data.token;
+          console.log('login success', token);
+          localStorage.setItem('token', token);
+          const decoded = jwtDecode(token);
+          console.log('decoded', decoded);
+          if(decoded) {
+            this.$router.push('/');
           }
-        });
-        const token = response.data.token;
-        console.log('login success', token);
-        localStorage.setItem('token', token);
-        const decoded = jwtDecode(token);
-        console.log('decoded', decoded);
-        if(decoded) {
-          this.$router.push('/');
+          resolve('Success!');
+        } catch(error) {
+          console.error('Login failed:', error);
+          reject(new Error('Login failed'));
         }
-      } catch(error) {
-        console.error('Login failed:', error);
-      }
+      }), {
+        success: 'Success!',
+        error: 'Error!',
+        loading: 'Loading...',
+        position: 'top-center'
+      });
     },
   },
   mounted() {

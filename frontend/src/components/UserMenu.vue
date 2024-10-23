@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { toast } from "@steveyuowo/vue-hot-toast";
+
 export default {
     name: 'UserMenu',
     props: {
@@ -25,6 +27,7 @@ export default {
         },
         logout() {
             localStorage.removeItem('token');
+            toast.success('Logged out successfully');
             this.$router.push('/login');
             this.$emit('close-menu');
         }

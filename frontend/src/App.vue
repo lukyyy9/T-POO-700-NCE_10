@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router';
 import User from './components/User.vue';
 import UserMenu from './components/UserMenu.vue';
 import TopRightMenu from './components/TopRightMenu.vue';
+import { Toaster, toast } from "@steveyuowo/vue-hot-toast";
+import "@steveyuowo/vue-hot-toast/vue-hot-toast.css";
 
 const isMenuOpen = ref(false);
 const route = useRoute();
@@ -20,6 +22,7 @@ function closeUserMenu() {
 </script>
 
 <template>
+  <Toaster/>
   <div id="app" class="from-primary to-[#EFD67F] bg-gradient-to-r w-full p-3 flex flex-col">
     <div class="flex justify-between mx-3">
       <img src="/logoFull.png" alt="Logo" class="h-9">

@@ -5,27 +5,37 @@
                 <button @click="clock" class="bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock in 📝</button>
             </div>
             <div>
-                <h2 class="text-[15px]  text-white border-b-2 border-white" >{{ formatDayMonth(startDateTime) }}</h2>
-                <div class="flex justify-center p-2 bg-subFrame rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2">
+                <div class="w-full flex justify-center pb-4">
+                    <p>{{ formatDayMonth(startDateTime) }}</p>
+                </div>
+                <div class="flex justify-center p-2 bg-subFrame rounded-[10px] font-inter text-white font-semiBold">
                     <div v-if="clocksDay.length === 0" class="pt-2 pb-2 text-[12px]">
                         <p>No clocks available for today !</p>
                     </div>
                     <div v-else class="flex-col justify-center items-center w-11/12">
                         <div v-for="(clock, i) in clocksDay" :key="i" class="flex p-1 justify-between">
-                            <div v-if="i === 0" class="flex items-center gap-3">
-                                <font-awesome-icon :icon="['fas', 'person-walking']" size="2xl"/>
-                                <p> Start</p>
+                            <div v-if="i === 0" class="flex items-center">
+                                <div class="w-16 pl-1">
+                                    <font-awesome-icon :icon="['fas', 'person-walking']" size="lg"/>
+                                </div>
+                                <p>Start</p>
                             </div>
-                            <div v-else-if="clocksDay.length % 2 === 0 && i === clocksDay.length-1" class="flex items-center gap-2">
-                                <font-awesome-icon :icon="['fas', 'person-walking-arrow-right']" size="2xl"/>
+                            <div v-else-if="clocksDay.length % 2 === 0 && i === clocksDay.length-1" class="flex items-center">
+                                <div class="w-16">
+                                    <font-awesome-icon :icon="['fas', 'person-walking-arrow-right']" size="lg"/>
+                                </div>
                                 <p>End</p>
                             </div>
-                            <div v-else-if="clock.status === true" class="flex items-center gap-3">
-                                <font-awesome-icon :icon="['fa', 'xmark']" size="2xl"/>
+                            <div v-else-if="clock.status === true" class="flex items-center">
+                                <div class="w-16 pl-[2px]">
+                                    <font-awesome-icon :icon="['fas', 'suitcase']" size="s"/>
+                                </div>
                                 <p>Break End</p>
                             </div>
-                            <div v-else class="flex items-center gap-3">
-                                <font-awesome-icon :icon="['fas', 'mug-saucer']" size="lg"/>
+                            <div v-else class="flex items-center">
+                                <div class="w-16">
+                                    <font-awesome-icon :icon="['fas', 'mug-saucer']" size="s"/>
+                                </div>
                                 <p>Break Start</p>
                             </div>
                             <p>{{ formatHours(clock.time) }}</p>

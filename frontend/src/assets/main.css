@@ -58,6 +58,16 @@ label{
     margin-bottom: 0.5rem;
 }
 
+.content-message{
+    color: black;
+    font-family: "Inter", sans-serif;
+}
+
+.VueHotToast__toast{
+  padding-right: 2rem;
+  padding-left: 2rem;
+}
+
 /*
 .cormorant-garamond-light {
     font-family: "Cormorant Garamond", serif;
