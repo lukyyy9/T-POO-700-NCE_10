@@ -52,7 +52,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
   const isAuthenticated = isTokenValid(token);
 
@@ -63,6 +63,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-});
+});*/
 
 export default router;

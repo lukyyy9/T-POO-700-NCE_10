@@ -1,7 +1,7 @@
 <template>
-    <div id="Login">
-        <img src="/gotham.jpg" alt="Gotham picture" class="absolute top-0 left-0 h-full w-[66%] object-cover rounded-l-xl">
-        <div class="w-[34%] flex flex-col items-center absolute right-0 top-0 h-full justify-center">
+    <div id="Login" class="h-full align-middle flex items-center justify-center">
+        <img src="/gotham.jpg" alt="Gotham picture" class="hidden lg:block absolute top-0 left-0 h-full w-[66%] object-cover rounded-l-xl">
+        <div class="flex flex-col items-center justify-center h-max lg:mt-0 lg:w-[34%] lg:h-[100%] lg:right-0 lg:top-0 lg:absolute">
             <h1>
                 Welcome back 👋
             </h1>

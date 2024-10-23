@@ -108,7 +108,7 @@ async updateWorkingTime() {
 </style>
 
 <template>
-  <div class="bg-frame rounded-xl w-[50%] p-5">
+  <div class="bg-frame rounded-xl lg:w-[50%] w-[100%] p-5">
     <div class="flex justify-between">
       <h2>Working Times {{ user_id }}</h2>
       <button v-if="!isEditing" @click="toggleCreateForm" class="rounded-lg border-2 border-secondary bg-transparent">

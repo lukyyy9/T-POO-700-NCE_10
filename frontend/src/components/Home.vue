@@ -1,7 +1,7 @@
 <template>
     <div id="home">
         <div class="flex flex-col gap-y-3"> <!-- ONLY IF THE USER IS A USER OR A MANAGER -->
-            <div class="flex gap-x-3">
+            <div class="flex flex-wrap gap-y-3 lg:gap-x-3 lg:flex-nowrap">
                 <ClockManager />
                 <WorkingTime />
             </div>
