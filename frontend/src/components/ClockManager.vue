@@ -9,7 +9,7 @@
                     <p>{{ formatDayMonth(startDateTime) }}</p>
                 </div>
                 <div class="flex justify-center p-2 bg-subFrame rounded-[10px] font-inter text-white font-semiBold">
-                    <div v-if="clocksDay.length === 0" class="pt-2 pb-2 text-[12px]">
+                    <div v-if="clocksDay.length === 0" class="pt-2 pb-2">
                         <p>No clocks available for today !</p>
                     </div>
                     <div v-else class="flex-col justify-center items-center w-11/12">
