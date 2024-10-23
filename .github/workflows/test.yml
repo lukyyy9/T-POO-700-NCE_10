@@ -25,15 +25,9 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
-    - name: Build and test backend
+    - name: Build and run tests
       run: |
-        docker build -t backend-test ./backend
-        docker run --rm -v ${{ github.workspace }}/backend/test-results:/app/test-results backend-test mix do test test/timemanager_web/controllers/user_controller_test.exs test/timemanager_web/controllers/clock_controller_test.exs
-    - name: Run integration tests
-      run: |
-        docker-compose -f docker-compose.test.yml up --build -d
-        docker-compose -f docker-compose.test.yml run -v ${{ github.workspace }}/backend/test-results:/app/test-results backend mix do test test/timemanager_web/controllers/user_controller_test.exs test/timemanager_web/controllers/clock_controller_test.exs
-        docker-compose -f docker-compose.test.yml down -v
+        docker-compose -f docker-compose.test.yml up --build --exit-code-from backend
       continue-on-error: true
     - name: List test results
       run: |
