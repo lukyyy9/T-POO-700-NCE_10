@@ -25,14 +25,15 @@ function closeUserMenu() {
   <Toaster/>
   <div id="app" class="from-primary to-[#EFD67F] bg-gradient-to-r w-full p-3 flex flex-col">
     <div class="flex justify-between mx-3">
-      <img src="/logoFull.png" alt="Logo" class="h-9">
+      <img src="/logoFull.png" alt="Logo" class="h-9 hidden lg:block">
+      <img src="/logo.png" alt="Logo" class="h-9 block lg:hidden">
       <div v-if=!isLoginPage class="flex gap-x-1 h-9 items-center">
         <button v-if=!isHomePage @click="clock" class="mr-1 bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock in 📝</button>
         <p class="text-black">00:24:35</p>
-        <p class="text-black">-</p>
-        <p class="text-black">keep it up !</p>
+        <p class="text-black hidden lg:block">-</p>
+        <p class="text-black hidden lg:block">keep it up !</p>
       </div>
-      <div class="w-[150px] flex justify-end">
+      <div class="lg:w-[150px] flex justify-end">
         <User @toggle-user-menu="toggleUserMenu" />
       </div>
     </div>

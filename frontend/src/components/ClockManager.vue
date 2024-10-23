@@ -1,5 +1,5 @@
 <template>
-    <div id="ClockManager" class="bg-frame rounded-xl p-5 w-[50%]">
+    <div id="ClockManager" class="bg-frame rounded-xl p-5 lg:w-[50%] w-[100%]">
             <div class="flex justify-between">
                 <h2>My Clocks</h2>
                 <button @click="clock" class="bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock in 📝</button>
