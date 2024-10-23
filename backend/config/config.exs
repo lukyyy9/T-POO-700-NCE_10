@@ -5,8 +5,6 @@
 # is restricted to this project.
 
 # General application configuration
-import Config
-
 config :timemanager, Timemanager.Repo,
   start_apps: false
 
