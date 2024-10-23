@@ -28,13 +28,13 @@
                             </div>
                             <div v-else-if="clock.status === true" class="flex items-center">
                                 <div class="w-16 pl-[2px]">
-                                    <font-awesome-icon :icon="['fas', 'suitcase']" size="s"/>
+                                    <font-awesome-icon :icon="['fas', 'suitcase']"/>
                                 </div>
                                 <p>Break End</p>
                             </div>
                             <div v-else class="flex items-center">
                                 <div class="w-16">
-                                    <font-awesome-icon :icon="['fas', 'mug-saucer']" size="s"/>
+                                    <font-awesome-icon :icon="['fas', 'mug-saucer']"/>
                                 </div>
                                 <p>Break Start</p>
                             </div>
@@ -50,6 +50,7 @@
 import axiosInstance from '../../axios.js';
 import moment from 'moment';
 import { getUserId } from '@/utils/user.js';
+import { toast } from "@steveyuowo/vue-hot-toast";
 
 export default {
     name: 'ClockManager',
@@ -105,16 +106,24 @@ export default {
             return moment(date).format('HH:mm');
         },
         clock() {
-            axiosInstance.post(`clocks/${this.userId}`)
-                .then(response => {
+            toast.promise(new Promise(async (resolve, reject) => {
+                try {
+                    const response = await axiosInstance.post(`clocks/${this.userId}`);
                     const newClock = response.data.data;
                     this.startDateTime = moment(newClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = newClock.status;
                     this.clocksDay.push(newClock);
-                })
-                .catch(error => {
-                    console.error('There was an error new Clock:', error);
-                });
+                    resolve('Clock created successfully!');
+                } catch (error) {
+                    console.error('There was an error creating a new Clock:', error);
+                    reject(new Error('Clock creation failed'));
+                }
+            }), {
+                success: 'Clock created successfully!',
+                error: 'Clock creation failed',
+                loading: 'Creating clock...',
+                position: 'top-center'
+            });
         },
        
     },

@@ -35,6 +35,10 @@ export default {
   },
   methods: {
     async signin() {
+      if (!this.username || !this.password) {
+        toast.error('Username and password are required');
+        return;
+      }
       toast.promise(new Promise(async (resolve, reject) => {
         try {
           const response = await axiosInstance.post('login', {
@@ -57,8 +61,8 @@ export default {
           reject(new Error('Login failed'));
         }
       }), {
-        success: 'Success!',
-        error: 'Error!',
+        success: 'Welcome back!',
+        error: 'Error signing in',
         loading: 'Loading...',
         position: 'top-center'
       });
