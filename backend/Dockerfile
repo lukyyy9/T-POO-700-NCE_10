@@ -30,4 +30,4 @@ EXPOSE 4000
 RUN chmod +x /app/entrypoint.sh
 
 # Use a shell form of CMD to allow for environment variable substitution
-CMD ["/bin/sh", "-c", "if [ \"$MIX_ENV\" = \"test\" ]; then mix test --cover; else /app/entrypoint.sh; fi"]
+CMD ["/bin/sh"]

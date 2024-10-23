@@ -35,12 +35,17 @@ config :timemanager, :clock_context, Timemanager.ClockContextMock
 # If you're using Mox for mocking
 config :timemanager, :mox_adapter, Mox
 
+# Configure ExUnit
+ExUnit.configure(
+  formatters: [
+    ExUnit.CLIFormatter,
+    JUnitFormatter
+  ]
+)
 
-# Configuration for JUnitFormatter
-config :junit_formatter,
+JUnitFormatter.configure(
   report_dir: "/app/test-results",
-  report_file: "results.xml",
-  print_report_file: true,
-  prepend_project_name?: true,
-  include_filename?: true,
-  include_file_line?: true
+  report_file: "results.xml"
+)
+
+ExUnit.start()

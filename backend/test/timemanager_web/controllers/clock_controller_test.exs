@@ -57,6 +57,8 @@ defmodule TimemanagerWeb.ClockControllerTest do
         nil
       end)
 
+      Timemanager.ClockContextMock.get_last_clocking(user_id)
+
       Mox.expect(Timemanager.ClockContextMock, :create_clock, fn _params ->
         {:ok, %Clock{id: 1, status: true, time: ~N[2023-10-10 10:00:00], user_id: user_id}}
       end)
@@ -96,9 +98,9 @@ defmodule TimemanagerWeb.ClockControllerTest do
     test "renders errors when data is invalid", %{conn: conn, user: user} do
       invalid_attrs = %{status: nil, time: nil, user_id: nil}
 
-      Mox.expect(Timemanager.ClockContextMock, :get_last_clocking, fn _user_id ->
-        nil
-      end)
+      # Mox.expect(Timemanager.ClockContextMock, :get_last_clocking, fn ^user_id ->
+      #   nil
+      # end)
 
       Mox.expect(Timemanager.ClockContextMock, :create_clock, fn _params ->
         {:error,
@@ -189,7 +191,7 @@ defmodule TimemanagerWeb.ClockControllerTest do
       }
 
       conn = put(conn, ~p"/api/clocks/1", clock: update_attrs)
-      assert %{"id" => 1} = json_response(conn, 200)["data"]
+      assert %{"id" => id} = json_response(conn, 200)["data"]
 
       Mox.expect(Timemanager.ClockContextMock, :get_by_user_id, fn _user_id ->
         [%Clock{id: 1, status: false, time: ~N[2023-10-11 11:00:00], user_id: user_id}]

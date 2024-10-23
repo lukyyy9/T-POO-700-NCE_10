@@ -1,0 +1,1 @@
+Delete clock test passed for ID 1

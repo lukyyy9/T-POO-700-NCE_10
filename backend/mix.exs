@@ -19,7 +19,7 @@ defmodule Timemanager.MixProject do
   def application do
     [
       mod: {Timemanager.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :mox]
     ]
   end
 
@@ -61,7 +61,7 @@ defmodule Timemanager.MixProject do
       {:guardian, "~> 2.0"},
       {:pbkdf2_elixir, "~> 1.3"},
       {:mox, "~> 1.2", only: :test},
-      {:junit_formatter, "~> 3.1", only: [:test]}
+      {:junit_formatter, "~> 3.4", only: [:test]}
       ]
   end
 

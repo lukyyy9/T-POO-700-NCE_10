@@ -1,0 +1,1 @@
+Update clock test failed with errors %{"status" => ["can't be blank"], "time" => ["can't be blank"], "user_id" => ["can't be blank"]}
