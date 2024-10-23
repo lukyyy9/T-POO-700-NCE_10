@@ -3,11 +3,11 @@
     <div class="flex justify-between m-2">
       <h2>My Statistics</h2>
     </div>
-    <div class="flex justify-center gap-36 pt-0 p-5">
+    <div class="flex justify-center flex-wrap lg:flex-nowrap gap-36 pt-0 p-5">
       <Chart class=" flex justify-center " type="bar" :data="chartDailyData" :options="chartDailyOptions" style="width: 30rem; height: 13rem;" />
       <Chart class="flex justify-center " type="bar" :data="chartWeeklyData" :options="chartWeeklyOptions" style="width: 30rem; height: 13rem;" />
     </div>
-    <div class="flex justify-center items-center gap-36">
+    <div class="flex justify-center flex-wrap lg:flex-nowrap items-center gap-36">
       <Chart class="flex justify-center" type="bar" :data="chartBarData" :options="chartOptions" style="width: 30rem; height: 14rem;" />
       <div class="flex justify-center items-center gap-2">
         <Chart class="flex justify-center" type="doughnut" :data="chartPieData" :options="chartPieOptions" style="width: 20rem; height: 17rem;" />
