@@ -17,6 +17,7 @@ defmodule TimemanagerWeb.UserController do
     render(conn, :index, users: users)
   end
 
+  plug Timemanager.Plugs.EnsureAdminRole when action in [:create]
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- UserContext.create_user(user_params) do
       conn
