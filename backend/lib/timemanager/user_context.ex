@@ -2,6 +2,7 @@ defmodule Timemanager.UserContext do
   @moduledoc """
   The UserContext context.
   """
+  @behaviour Timemanager.UserContextBehaviour
 
   import Ecto.Query, warn: false
   alias Timemanager.Repo

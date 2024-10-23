@@ -1,9 +1,9 @@
 <template>
-    <div id="user-menu">
-        <div class="bg-mainFrame border border-gray-600 rounded-t-lg px-5 py-2 flex justify-center">
+    <div id="user-menu" v-if="isMenuOpen">
+        <div @click="editProfile" class="bg-mainFrame border border-gray-600 rounded-t-lg px-5 py-2 flex justify-center cursor-pointer hover:bg-frame">
             Edit my profile
         </div>
-        <div class="bg-red text-mainFrame border border-gray-600 rounded-b-lg px-5 py-2 flex justify-center">
+        <div @click="logout" class="bg-secondary border text-black border-gray-600 rounded-b-lg px-5 py-2 flex justify-center cursor-pointer hover:bg-secondaryAccent">
             Logout
         </div>
     </div>
@@ -12,17 +12,23 @@
 <script>
 export default {
     name: 'UserMenu',
-    data() {
-        return {
-            // Component data goes here
-        };
+    props: {
+        isMenuOpen: {
+            type: Boolean,
+            required: true
+        }
     },
     methods: {
-        // Component methods go here
-    },
-    computed: {
-        // Computed properties go here
-    },
+        editProfile() {
+            this.$router.push('/editProfile');
+            this.$emit('close-menu');
+        },
+        logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
+            this.$emit('close-menu');
+        }
+    }
 };
 </script>
 

@@ -8,7 +8,7 @@ import Config
 config :timemanager, Timemanager.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: "10.73.189.233",
   database: "timemanager_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
@@ -18,7 +18,7 @@ config :timemanager, Timemanager.Repo,
 config :timemanager, TimemanagerWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "cnpXMIRaseCrNtYVtym/ELaXoku9MF1fOXhFi3oSfFQM48+9K7T6GF8wiWC9woVO",
-  server: false
+  server: true
 
 # In test we don't send emails
 config :timemanager, Timemanager.Mailer, adapter: Swoosh.Adapters.Test
@@ -31,3 +31,5 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :timemanager, :clock_context, Timemanager.ClockContextMock

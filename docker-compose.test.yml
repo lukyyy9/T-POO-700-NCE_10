@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend-test
+    environment:
+      - MIX_ENV=test
+      - DATABASE_URL=ecto://test_user:test_password@db/my_test_db
+    depends_on:
+      - db
+    command: mix do test 
+      test/timemanager_web/controllers/user_controller_test.exs 
+      test/timemanager_web/controllers/clock_controller_test.exs
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   image: frontend-test
+  #   environment:
+  #     - NODE_ENV=test
+  #   command: npm test
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=my_test_db
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=test_password
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+
+volumes:
+  pgdata_test:

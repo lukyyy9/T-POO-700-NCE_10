@@ -1,21 +1,33 @@
 <template>
-    <div id="ClockManager" class="flex-col m-3 w-1/2 h-5/6 bg-[#4E4E4E] rounded-[10px] p-5">
+    <div id="ClockManager" class="bg-frame rounded-xl p-5 w-[50%]">
             <div class="flex justify-between">
-                <h1 class="text-[25px] text-white">My Clocks</h1>
-                <button @click="clock" class="w-[112px] h-[33px] rounded-[8px] bg-[#DBADFF] border-[2px] border-[#E7C9FF] drop-shadow-xl hover:shadow-[0px_0px_9px_2px_#FFEFB7] transition-shadow duration-300" ><p class="font-inter font-normal text-[14px]">Clock in 📝</p></button>
+                <h2>My Clocks</h2>
+                <button @click="clock" class="bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock in 📝</button>
             </div>
-            <div class="flex-col mt-6 ml-2">
-                <h2 class="text-[15px]  text-white border-b-[1px] border-white" >{{ formatDayMonth(startDateTime) }}</h2>
-                <div class="flex justify-center p-2 bg-[#656565] rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2">
+            <div>
+                <h2 class="text-[15px]  text-white border-b-2 border-white" >{{ formatDayMonth(startDateTime) }}</h2>
+                <div class="flex justify-center p-2 bg-subFrame rounded-[10px] font-inter text-white font-semiBold text-[9px] w-1/2">
                     <div v-if="clocksDay.length === 0" class="pt-2 pb-2 text-[12px]">
                         <p>No clocks available for today !</p>
                     </div>
                     <div v-else class="flex-col justify-center items-center w-11/12">
                         <div v-for="(clock, i) in clocksDay" :key="i" class="flex p-1 justify-between">
-                            <p v-if="i === 0" > Start</p>
-                            <p v-else-if="i === clocksDay.length-1" >End</p>
-                            <p v-else-if="clock.status">Break End</p>
-                            <p v-else>Break Start</p>
+                            <div v-if="i === 0" class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fas', 'person-walking']" size="2xl"/>
+                                <p> Start</p>
+                            </div>
+                            <div v-else-if="clocksDay.length % 2 === 0 && i === clocksDay.length-1" class="flex items-center gap-2">
+                                <font-awesome-icon :icon="['fas', 'person-walking-arrow-right']" size="2xl"/>
+                                <p>End</p>
+                            </div>
+                            <div v-else-if="clock.status === true" class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fa', 'xmark']" size="2xl"/>
+                                <p>Break End</p>
+                            </div>
+                            <div v-else class="flex items-center gap-3">
+                                <font-awesome-icon :icon="['fas', 'mug-saucer']" size="lg"/>
+                                <p>Break Start</p>
+                            </div>
                             <p>{{ formatHours(clock.time) }}</p>
                         </div>
                 </div>
@@ -27,6 +39,7 @@
 <script>
 import axiosInstance from '../../axios.js';
 import moment from 'moment';
+import { getUserId } from '@/utils/user.js';
 
 export default {
     name: 'ClockManager',
@@ -35,21 +48,27 @@ export default {
             clocksDay: [],
             startDateTime: null,
             clockIn: false,
+            userId: null
              };
     },
     methods: {
         refresh() {
-            const user_id = this.$route.params.user_id;
-            
-            axiosInstance.get(`clocks/${user_id}`)
+            const savedToken = localStorage.getItem('token');
+            if(savedToken) {
+                this.userId = getUserId(savedToken);
+                console.log('userId', this.userId);
+            } else {
+                console.log('to token found');
+            }
+           
+            axiosInstance.get(`clocks/${this.userId}`)
                 .then(response => {  
                     const clocksData = response.data.data;
-                    console.log('data', response.data.data)
-                    if(response.data.data){
-                        const lastClock = clocksData[response.data.data.length - 1];
+                    console.log('data', clocksData);
+                    if(clocksData){
+                        const lastClock = clocksData[clocksData.length - 1];
                     this.startDateTime = moment(lastClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = lastClock.status;
-                    console.log('startDateTime:', this.startDateTime);
                     console.log('clockIn:', this.clockIn);
 
                     const currentDay = moment().format('DD MMMM YY');
@@ -76,16 +95,12 @@ export default {
             return moment(date).format('HH:mm');
         },
         clock() {
-            const user_id = this.$route.params.user_id;
-            axiosInstance.post(`clocks/${user_id}`)
+            axiosInstance.post(`clocks/${this.userId}`)
                 .then(response => {
                     const newClock = response.data.data;
                     this.startDateTime = moment(newClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = newClock.status;
-                    console.log('New Clock:', newClock);
-
                     this.clocksDay.push(newClock);
-
                 })
                 .catch(error => {
                     console.error('There was an error new Clock:', error);
@@ -95,7 +110,6 @@ export default {
     },
     mounted() {
         this.refresh();
-        this.clocksDay;
     }
 };
 </script>
