@@ -29,7 +29,9 @@ function closeUserMenu() {
         <p class="text-black">-</p>
         <p class="text-black">keep it up !</p>
       </div>
-      <User @toggle-user-menu="toggleUserMenu" />
+      <div class="w-[150px] flex justify-end">
+        <User @toggle-user-menu="toggleUserMenu" />
+      </div>
     </div>
     <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative overflow-y-scroll">
       <div class="flex justify-between">
