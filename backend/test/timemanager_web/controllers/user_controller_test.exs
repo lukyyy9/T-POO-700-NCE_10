@@ -46,6 +46,11 @@ defmodule TimemanagerWeb.UserControllerTest do
 
       # Écrire le résultat dans un fichier
       File.write!("backend/test-results/user_index_test_result.txt", "User index test passed\n")
+      if File.exists?("backend/test-results/user_index_test_result.txt") do
+        IO.puts("Fichier écrit avec succès")
+      else
+        IO.puts("Échec de l'écriture du fichier")
+      end
     end
 
     test "returns empty list when no users exist", %{conn: conn} do
