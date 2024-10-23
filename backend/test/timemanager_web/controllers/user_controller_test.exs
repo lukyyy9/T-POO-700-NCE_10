@@ -16,16 +16,19 @@ defmodule TimemanagerWeb.UserControllerTest do
   @invalid_attrs %{username: nil, email: nil}
 
   setup %{conn: conn} do
-    # Checkout de la sandbox Ecto pour chaque test et configuration du header JSON
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timemanager.Repo)
-    # Mode partagé pour permettre les connexions dans le même processus
     Ecto.Adapters.SQL.Sandbox.mode(Timemanager.Repo, {:shared, self()})
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
+  setup_all do
+    # Créer le répertoire pour les résultats des tests
+    File.mkdir_p!("backend/test-results")
+    :ok
+  end
+
   describe "index" do
     setup do
-      # Nettoyer la base de données avant chaque test
       Timemanager.Repo.delete_all(User)
       users = create_users()
       {:ok, users: users}
@@ -34,18 +37,25 @@ defmodule TimemanagerWeb.UserControllerTest do
     test "lists all users", %{conn: conn, users: users} do
       conn = get(conn, ~p"/api/users")
 
-      assert json_response(conn, 200)["data"] ==
-               Enum.map(users, fn user ->
-                 %{"id" => user.id, "username" => user.username, "email" => user.email}
-               end)
+      response = json_response(conn, 200)["data"]
+      expected = Enum.map(users, fn user ->
+        %{"id" => user.id, "username" => user.username, "email" => user.email}
+      end)
+
+      assert response == expected
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_index_test_result.txt", "User index test passed\n")
     end
 
     test "returns empty list when no users exist", %{conn: conn} do
-      # Supprimer manuellement les utilisateurs pour simuler une base vide
       Timemanager.Repo.delete_all(User)
 
       conn = get(conn, ~p"/api/users")
       assert json_response(conn, 200)["data"] == []
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_empty_index_test_result.txt", "User empty index test passed\n")
     end
 
     defp create_users do
@@ -67,11 +77,17 @@ defmodule TimemanagerWeb.UserControllerTest do
                "email" => "userTest@example.com",
                "username" => "some username"
              } = json_response(conn, 200)["data"]
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_create_test_result.txt", "User create test passed\n")
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, ~p"/api/users", user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_create_error_test_result.txt", "User create error test passed\n")
     end
   end
 
@@ -89,11 +105,17 @@ defmodule TimemanagerWeb.UserControllerTest do
                "email" => "userTestUpdate@example.com",
                "username" => "some updated username"
              } = json_response(conn, 200)["data"]
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_update_test_result.txt", "User update test passed\n")
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
       conn = put(conn, ~p"/api/users/#{user.id}", user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_update_error_test_result.txt", "User update error test passed\n")
     end
   end
 
@@ -107,10 +129,12 @@ defmodule TimemanagerWeb.UserControllerTest do
       assert_error_sent(404, fn ->
         get(conn, ~p"/api/users/#{user.id}")
       end)
+
+      # Écrire le résultat dans un fichier
+      File.write!("backend/test-results/user_delete_test_result.txt", "User delete test passed\n")
     end
   end
 
-  # Helper pour créer un utilisateur avant certains tests
   defp create_user(_) do
     user = user_fixture()
     %{user: user}
