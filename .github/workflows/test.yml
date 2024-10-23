@@ -33,9 +33,9 @@ jobs:
 
     - name: List test results
       run: |
-        echo "Listing test results in backend/test-results:"
+        echo "Listing test results in backend/backend/test-results:"
         ls -la backend/test-results
-        for file in backend/test-results/*.txt; do
+        for file in backend/backend/test-results/*.txt; do
           if [ -f "$file" ]; then
             echo "Contents of $file:"
             cat "$file"
