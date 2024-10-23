@@ -8,6 +8,6 @@ services:
     image: backend-test
     environment:
       - MIX_ENV=test
-    command: mix test test/timemanager_web/controllers/user_controller_test.exs test/timemanager_web/controllers/clock_controller_test.exs
+    command: sh -c "mix test test/timemanager_web/controllers/user_controller_test.exs test/timemanager_web/controllers/clock_controller_test.exs && cp -r /app/test-results /app/test-results-output"
     volumes:
-      - ./backend/test-results:/app/test-results
+      - ./backend/test-results:/app/test-results-output

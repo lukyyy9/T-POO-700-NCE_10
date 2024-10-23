@@ -12,6 +12,14 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     
+    - name: Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Create test results directory
+      run: mkdir -p backend/test-results
+
     - name: Cache Elixir deps and Node modules
       uses: actions/cache@v4
       with:
@@ -28,23 +36,14 @@ jobs:
     - name: Build and run tests
       run: |
         docker-compose -f docker-compose.test.yml up --build --exit-code-from backend
-      continue-on-error: true
     - name: List test results
       run: |
         echo "Listing test results in backend/test-results:"
         ls -la backend/test-results
-        echo "Contents of backend/test-results/index_test_result.txt:"
-        cat backend/test-results/index_test_result.txt || echo "File not found"
-        echo "Contents of backend/test-results/create_clock_result.txt:"
-        cat backend/test-results/create_clock_result.txt || echo "File not found"
-        echo "Contents of backend/test-results/create_clock_error_result.txt:"
-        cat backend/test-results/create_clock_error_result.txt || echo "File not found"
-        echo "Contents of backend/test-results/delete_clock_result.txt:"
-        cat backend/test-results/delete_clock_result.txt || echo "File not found"
-        echo "Contents of backend/test-results/update_clock_result.txt:"
-        cat backend/test-results/update_clock_result.txt || echo "File not found"
-        echo "Contents of backend/test-results/update_clock_error_result.txt:"
-        cat backend/test-results/update_clock_error_result.txt || echo "File not found"
+        for file in backend/test-results/*.txt; do
+          echo "Contents of $file:"
+          cat "$file" || echo "File not found"
+        done
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
