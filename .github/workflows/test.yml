@@ -1,19 +1,14 @@
 name: Run Specific Tests
-
 on:
   push:
     branches: [ Test_pipeline, main ]
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
     - name: Disable deprecation warnings
       run: echo "ACTIONS_STEP_DEBUG=false" >> $GITHUB_ENV
-
     - uses: actions/checkout@v4
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     
@@ -25,32 +20,43 @@ jobs:
           _build
           ~/.npm
         key: ${{ runner.os }}-deps-${{ hashFiles('**/mix.lock', '**/package-lock.json') }}
-
     - name: Login to DockerHub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
-
     - name: Build and test backend
       run: |
         docker build -t backend-test ./backend
         docker run --rm -v ${{ github.workspace }}/backend/test-results:/app/test-results backend-test mix do test test/timemanager_web/controllers/user_controller_test.exs test/timemanager_web/controllers/clock_controller_test.exs
-
     - name: Run integration tests
       run: |
         docker-compose -f docker-compose.test.yml up --build -d
         docker-compose -f docker-compose.test.yml run -v ${{ github.workspace }}/backend/test-results:/app/test-results backend mix do test test/timemanager_web/controllers/user_controller_test.exs test/timemanager_web/controllers/clock_controller_test.exs
         docker-compose -f docker-compose.test.yml down -v
       continue-on-error: true
-
+    - name: List test results
+      run: |
+        echo "Listing test results in backend/test-results:"
+        ls -la backend/test-results
+        echo "Contents of backend/test-results/index_test_result.txt:"
+        cat backend/test-results/index_test_result.txt || echo "File not found"
+        echo "Contents of backend/test-results/create_clock_result.txt:"
+        cat backend/test-results/create_clock_result.txt || echo "File not found"
+        echo "Contents of backend/test-results/create_clock_error_result.txt:"
+        cat backend/test-results/create_clock_error_result.txt || echo "File not found"
+        echo "Contents of backend/test-results/delete_clock_result.txt:"
+        cat backend/test-results/delete_clock_result.txt || echo "File not found"
+        echo "Contents of backend/test-results/update_clock_result.txt:"
+        cat backend/test-results/update_clock_result.txt || echo "File not found"
+        echo "Contents of backend/test-results/update_clock_error_result.txt:"
+        cat backend/test-results/update_clock_error_result.txt || echo "File not found"
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: backend/test-results
-
     - name: Check test results
       if: failure()
       run: exit 1
