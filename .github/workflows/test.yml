@@ -51,7 +51,7 @@ jobs:
 
     - name: Check test results
       run: |
-        if [ -n "$(find backend/test-results -name '*.txt' -print -quit)" ]; then
+        if [ -n "$(find backend/backend/test-results -name '*.txt' -print -quit)" ]; then
           echo "Tests executed and results found."
           exit 0
         else
