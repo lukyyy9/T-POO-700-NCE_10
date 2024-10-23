@@ -22,9 +22,11 @@ config :phoenix, :plug_init_mode, :runtime
 # Use the mock for ClockContext
 config :timemanager, :clock_context, Timemanager.ClockContextMock
 
+# Désactiver la connexion à la base de données pendant les tests mockés
+config :timemanager, Timemanager.Repo, adapter: Ecto.Adapters.NoRepo
+
 # If you're using Mox for mocking
 config :timemanager, :mox_adapter, Mox
-
 
 # Configuration for JUnitFormatter
 config :junit_formatter,

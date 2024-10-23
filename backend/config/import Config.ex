@@ -4,7 +4,7 @@ import Config
 # Note: For mocked tests, you might not need this database configuration
 config :timemanager, Timemanager.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "pwd",
   hostname: "10.73.189.233",
   database: "timemanager_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
