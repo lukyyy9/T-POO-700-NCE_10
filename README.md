@@ -43,9 +43,13 @@
 
 - Open your browser and go to `http://localhost:80`
 
+## Deployment
+
+- To deploy the project, simply commit your changes and push them to the `main` branch. The project will be automatically deployed to the AWS EC2 using the deployment pipeline.
+
 ## Troubleshooting
 
-- If you encounter an error with some pending migrations, run `mix ecto.reset`
+- If you encounter an error with some pending migrations, run `mix ecto.reset`. If that doesn't work, delete the project directory, clone it again and run the installation steps.
 
 ## Useful Postgres commands
 
