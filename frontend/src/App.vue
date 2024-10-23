@@ -1,11 +1,17 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import User from './components/User.vue';
 import UserMenu from './components/UserMenu.vue';
 import TopRightMenu from './components/TopRightMenu.vue';
+import axiosInstance from '../axios.js';
+import { getUserId } from '@/utils/user';
+import moment from 'moment';
 
 const isMenuOpen = ref(false);
+const workingHours = ref('Calculating...');
+const userId = ref(null);
+const username = ref(null);
 const route = useRoute();
 const isHomePage = computed(() => route.path === '/');
 const isLoginPage = computed(() => route.path === '/login');
@@ -17,6 +23,71 @@ function toggleUserMenu() {
 function closeUserMenu() {
     isMenuOpen.value = false;
 }
+
+async function getUsername() {
+  try {
+    const savedToken = localStorage.getItem('token');
+    if(savedToken) {
+      userId.value = getUserId(savedToken);
+    } else {
+      console.log('to token found');
+      }
+
+      const response = await axiosInstance.get(`users/${userId.value}`);
+      username.value = response.data.data.username;
+  } catch (error) {
+  console.error('not token :', error);
+  }  
+}
+
+async function calculateHours() {
+  try {
+    //get CloksDay[]
+    const response = await axiosInstance.get(`clocks/${userId.value}`);
+    const clocksData = response.data.data;
+    const clocksDay = [];
+    const currentDay = moment().format('DD MMMM YY');
+            
+    clocksData.forEach(ele => {
+        const dayClock = moment(ele.time).format('DD MMMM YY');
+        if (currentDay === dayClock) {
+            clocksDay.push(ele);
+        };
+    });
+          
+          //calculate working hours
+          if(clocksDay.length > 0) {
+                        let duration = 0;
+                        for(let i = 0; i < clocksDay.length-1 ; i+=2) {
+                            if(clocksDay[i+1]) {
+                               duration += moment(clocksDay[i+1].time).diff(moment(clocksDay[i].time));
+                            }
+                        };
+                        const hours = Math.floor(duration / 3600000);
+                        let hoursString = String(hours).padStart(2, '0');
+                        const minutes = String(Math.floor((duration % 3600000) / 60000)).padStart(2, '0');
+                        const seconds = String(Math.floor((duration % 60000) / 1000) ).padStart(2, '0');
+                        if (hours >= 8) {
+                            workingHours.value = `${hoursString} : ${minutes} : ${seconds} - time to go home !`;
+                            } else {                        
+                                workingHours.value = `${hoursString} : ${minutes} : ${seconds} - keep it up`;
+                            }
+                        } else {
+                             workingHours.value = 'Go back to work !';
+                         };
+                        } catch (error) {
+                          console.error('not clocks:', error);
+                        }  
+                
+}
+
+
+onMounted (() => {
+  getUsername();
+  calculateHours();
+})
+
+
 </script>
 
 <template>
@@ -25,15 +96,13 @@ function closeUserMenu() {
       <img src="/logoFull.png" alt="Logo" class="h-9">
       <div v-if=!isLoginPage class="flex gap-x-1 h-9 items-center">
         <button v-if=!isHomePage @click="clock" class="mr-1 bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock in 📝</button>
-        <p class="text-black">00:24:35</p>
-        <p class="text-black">-</p>
-        <p class="text-black">keep it up !</p>
+        <p class="text-black">{{workingHours}}</p>
       </div>
       <User @toggle-user-menu="toggleUserMenu" />
     </div>
     <div class="bg-mainFrame w-full h-[100vh] rounded-xl mt-3 p-3 relative overflow-y-scroll">
       <div class="flex justify-between">
-        <h1 class="ml-3">Hello Maietry 👋</h1>
+        <h1 class="ml-3">Hello {{username}} 👋</h1>
         <TopRightMenu />
       </div>
       <router-view />

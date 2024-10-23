@@ -48,7 +48,8 @@ export default {
             clocksDay: [],
             startDateTime: null,
             clockIn: false,
-            userId: null
+            userId: null,
+            warning: false,
              };
     },
     methods: {
@@ -56,7 +57,6 @@ export default {
             const savedToken = localStorage.getItem('token');
             if(savedToken) {
                 this.userId = getUserId(savedToken);
-                console.log('userId', this.userId);
             } else {
                 console.log('to token found');
             }
@@ -79,9 +79,18 @@ export default {
                             }
                         });
 
+                    //Warning forget clock
+                    if(clocksData.length % 2 !== 0) {
+                        this.warning = true;
+                        
+                    } else {
+                        this.warning = false;
+                    };
+                    console.log('warning', this.warning);
                     } else {
                       console.log('not clocks');
                     };
+
                     
                 })
                 .catch(error => {
@@ -101,6 +110,7 @@ export default {
                     this.startDateTime = moment(newClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = newClock.status;
                     this.clocksDay.push(newClock);
+
                 })
                 .catch(error => {
                     console.error('There was an error new Clock:', error);
