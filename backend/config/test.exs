@@ -1,4 +1,4 @@
-import Config
+import config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
@@ -22,8 +22,17 @@ config :phoenix, :plug_init_mode, :runtime
 # Use the mock for ClockContext
 config :timemanager, :clock_context, Timemanager.ClockContextMock
 
-# Désactiver la connexion à la base de données pendant les tests mockés
-config :timemanager, Timemanager.Repo, adapter: Ecto.Adapters.NoRepo
+# Mock Repo during tests, use a fake database name to prevent accidental connections
+config :timemanager, Timemanager.Repo,
+  pool: Ecto.Adapters.SQL.Sandbox,
+  adapter: Ecto.Adapters.Postgres,
+  database: "mock_db",
+  username: "mock_user",
+  password: "mock_password",
+  hostname: "localhost",
+  pool_size: 10,
+  pool_timeout: 5000,
+  start_apps: false
 
 # If you're using Mox for mocking
 config :timemanager, :mox_adapter, Mox
