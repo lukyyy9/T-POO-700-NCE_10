@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import User from './components/User.vue';
 import UserMenu from './components/UserMenu.vue';
@@ -90,7 +90,11 @@ async function calculateHours() {
 onMounted(() => {
   getUsername();
   calculateHours();
-})
+});
+
+watch(route, () => {
+  getUsername();
+});
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <template>
-    <div id="edit-profile" class="bg-frame rounded-xl p-5 w-[100%] flex justify-center flex-col">
+    <div id="edit-profile" class="bg-frame rounded-xl p-5 w-[100%] flex justify-center flex-col h-[100%]">
         <h2>Profile</h2>
         <div class="flex flex-col items-center">
             <label for="username">Username:</label>

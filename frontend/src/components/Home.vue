@@ -7,6 +7,9 @@
             </div>
             <Team /> <!-- ONLY IF THE USER IS A MANAGER -->
         </div>
+        <div> <!-- ONLY IF THE USER IS AN ADMIN -->
+
+        </div>
     </div>
 </template>
 
