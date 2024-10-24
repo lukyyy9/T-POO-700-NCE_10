@@ -1,11 +1,15 @@
 defmodule Timemanager.ClockContextFixtures do
-  alias Timemanager.Repo
+  import Mox
   alias Timemanager.UserContext.User
+  alias Timemanager.ClockContext.Clock
 
   @moduledoc """
   This module defines test helpers for creating
   entities via the `Timemanager.ClockContext` context.
   """
+
+  @user_context Application.get_env(:timemanager, :user_context)
+  @clock_context Application.get_env(:timemanager, :clock_context)
 
   @doc """
   Generate a clock.
@@ -18,17 +22,19 @@ defmodule Timemanager.ClockContextFixtures do
     attrs = Map.put(attrs, :user_id, user.id)
 
     # Fusionner les attributs fournis avec les valeurs par défaut, y compris la date actuelle
-    {:ok, clock} =
-      attrs
-      |> Enum.into(%{
-        status: true,
-        time: now  # Utilise la date actuelle pour le champ 'time'
-      })
-      |> Timemanager.ClockContext.create_clock()
+    clock_attrs = Enum.into(attrs, %{
+      status: true,
+      time: now  # Utilise la date actuelle pour le champ 'time'
+    })
+
+    expect(@clock_context, :create_clock, fn ^clock_attrs ->
+      {:ok, struct(Clock, Map.put(clock_attrs, :id, System.unique_integer([:positive])))}
+    end)
+
+    {:ok, clock} = @clock_context.create_clock(clock_attrs)
 
     clock
   end
-
 
   def user_fixture(attrs \\ %{}) do
     # Création d'un utilisateur avec des attributs par défaut ou ceux fournis
@@ -37,9 +43,13 @@ defmodule Timemanager.ClockContextFixtures do
       email: "test@example.com",
     }
 
-    attrs = Enum.into(attrs, default_attrs)  # Fusionne les attributs par défaut avec ceux fournis
+    attrs = Enum.into(attrs, default_attrs)
 
-    {:ok, user} = Timemanager.UserContext.create_user(attrs)
+    expect(@user_context, :create_user, fn ^attrs ->
+      {:ok, struct(User, Map.put(attrs, :id, System.unique_integer([:positive])))}
+    end)
+
+    {:ok, user} = @user_context.create_user(attrs)
     user
   end
 end
