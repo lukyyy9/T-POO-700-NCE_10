@@ -51,10 +51,6 @@ defmodule Timemanager.Repo do
   end
 
   def start_link(opts \\ []) do
-    if Mix.env() == :test do
-      {:ok, self()}
-    else
-      super(opts)
-    end
+    Ecto.Repo.start_link(__MODULE__, opts)
   end
 end
