@@ -25,7 +25,6 @@ config :timemanager, :clock_context, Timemanager.ClockContextMock
 # Use the mock forUserContext
 config :timemanager, :user_context, Timemanager.UserContextMock
 
-
 # Mock Repo during tests, use a fake database name to prevent accidental connections
 config :timemanager, Timemanager.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -49,3 +48,5 @@ config :junit_formatter,
   prepend_project_name?: true,
   include_filename?: true,
   include_file_line?: true
+
+config :timemanager, Timemanager.Repo, show_sensitive_data_on_connection_error: true
