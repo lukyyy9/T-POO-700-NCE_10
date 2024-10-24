@@ -1,4 +1,4 @@
-defmodule Timemanager.MockRepo do
+defmodule Timemanager.RepoMock do
   Application.put_env(:timemanager, :user_context, Timemanager.UserContextMock)
   alias Timemanager.UserContext.User
   alias Timemanager.ClockContext.Clock
