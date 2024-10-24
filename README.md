@@ -45,7 +45,21 @@
 
 ## Deployment
 
-- To deploy the project, simply commit your changes and push them to the `main` branch. The project will be automatically deployed to the AWS EC2 using the deployment pipeline.
+### Server deployment
+
+To deploy the project to the server (frontend, backend and database), simply commit your changes and push them to the `main` branch. The project will be automatically deployed to the AWS EC2 using the deployment pipeline.
+
+### Application deployment
+
+First, you have to install [Android Studio](https://r5---sn-5hne6nzd.gvt1.com/edgedl/android/studio/install/2024.1.2.12/android-studio-2024.1.2.12-windows.exe?cms_redirect=yes&met=1729501824,&mh=q1&mip=163.5.23.73&mm=28&mn=sn-5hne6nzd&ms=nvh&mt=1729501463&mv=m&mvi=5&pl=27&rmhost=r2---sn-5hne6nzd.gvt1.com&rms=nvh,nvh&shardbypass=sd&smhost=r2---sn-5hne6nsy.gvt1.com).
+To build the APK, run the following commands in the frontend folder:
+
+- `npx npm run build && npx cap copy`
+- `npx cap sync --inline`
+- `npx cap open android`
+
+Then, in Android Studio, build the APK by clicking on Build > Build Bundle(s) / APK(s) > Build APK(s).
+The APK will be generated in the `frontend\android\app\build\outputs\apk\debug` folder.
 
 ## Troubleshooting
 
