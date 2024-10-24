@@ -76,7 +76,7 @@ async function calculateHours() {
       if (hours >= 8) {
         workingHours.value = `${hoursString} : ${minutes} : ${seconds} - time to go home !`;
       } else {
-        workingHours.value = `${hoursString} : ${minutes} : ${seconds} - keep it up`;
+        workingHours.value = `${hoursString} : ${minutes} : ${seconds} - keep it up !`;
       }
     } else {
       workingHours.value = 'Go back to work !';
@@ -121,7 +121,7 @@ watch(route, () => {
     <router-view />
   </div>
   <div v-if=!isLoginPage class="bottom-0 w-full bg-primary z-10 h-14 flex items-center place-content-evenly sm:hidden">
-    <button @click="goHome" class="block sm:hidden" style="color:black!important">
+    <button @click="goHome" class="block sm:hidden" :style="{ color: isHomePage ? '#111' : '#817447'  }">
       <font-awesome-icon :icon="['fas', 'house']" size="xl" />
     </button>
     <TopRightMenu />

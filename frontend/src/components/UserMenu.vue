@@ -4,7 +4,7 @@
             <p>Edit my profile</p>
         </div>
         <div @click="logout" class="bg-secondary border border-gray-600 rounded-b-lg px-5 py-2 flex justify-center cursor-pointer hover:bg-secondaryAccent">
-            Logout
+            <p class="text-black">Logout</p>
         </div>
     </div>
 </template>
