@@ -22,6 +22,10 @@ config :phoenix, :plug_init_mode, :runtime
 # Use the mock for ClockContext
 config :timemanager, :clock_context, Timemanager.ClockContextMock
 
+# Use the mock forUserContext
+config :timemanager, :user_context, Timemanager.UserContextMock
+
+
 # Mock Repo during tests, use a fake database name to prevent accidental connections
 config :timemanager, Timemanager.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
