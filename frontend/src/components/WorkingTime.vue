@@ -1,9 +1,8 @@
 <script>
 import axiosInstance from '../../axios.js';
-
+import { getUserId } from '../utils/user.js'; 
 
 export default {
-  props: ['user_id'],
   data() {
     return {
       workingTimes: [],
@@ -12,13 +11,14 @@ export default {
         end: ''
       },
       isCreating: false,
-      isEditing: false
+      isEditing: false,
+      user_id: null 
     };
   },
   methods: {
     async getWorkingTimes() {
       if (!this.user_id) {
-        console.error('No user_id provided');
+        console.error('No user_id found');
         return;
       }
       try {
@@ -29,7 +29,7 @@ export default {
       }
     },
       
-      toggleCreateForm() {
+    toggleCreateForm() {
       this.isCreating = !this.isCreating;
       this.isEditing = false; 
       this.resetForm();
@@ -40,40 +40,40 @@ export default {
       this.isCreating = false;
       this.isEditing = false;
     },
+
     async createWorkingTime() {
-  try {
-    const workingTimeData = {
-      working_time: this.currentWorkingTime
-    };
-    const response = await axiosInstance.post(`workingTime/${this.user_id}`, workingTimeData);
-    this.workingTimes.push(response.data);
-    this.resetForm();
-    console.log('Working time created successfully');
-  } catch (error) {
-    console.error('Error creating working time:', error);
-  }
-},
-async updateWorkingTime() {
-  try {
-    const workingTimeData = {
-      working_time: this.currentWorkingTime 
-    };
-    const response = await axiosInstance.put(`workingTime/${this.currentWorkingTime.id}`, workingTimeData);
+      try {
+        const workingTimeData = {
+          working_time: this.currentWorkingTime
+        };
+        const response = await axiosInstance.post(`workingTime/${this.user_id}`, workingTimeData);
+        this.workingTimes.push(response.data);
+        this.resetForm();
+        console.log('Working time created successfully');
+      } catch (error) {
+        console.error('Error creating working time:', error);
+      }
+    },
 
-    const index = this.workingTimes.findIndex(wt => wt.id === this.currentWorkingTime.id);
-    if (index !== -1) {
-      
-      this.workingTimes[index] = response.data;
-    }
-    
-    this.resetForm();
-    console.log('Working time updated successfully');
-  } catch (error) {
-    console.error('Error updating working time:', error);
-  }
-}
+    async updateWorkingTime() {
+      try {
+        const workingTimeData = {
+          working_time: this.currentWorkingTime 
+        };
+        const response = await axiosInstance.put(`workingTime/${this.currentWorkingTime.id}`, workingTimeData);
 
-,
+        const index = this.workingTimes.findIndex(wt => wt.id === this.currentWorkingTime.id);
+        if (index !== -1) {
+          this.workingTimes[index] = response.data;
+        }
+
+        this.resetForm();
+        console.log('Working time updated successfully');
+      } catch (error) {
+        console.error('Error updating working time:', error);
+      }
+    },
+
     async deleteWorkingTime(id) {
       try {
         await axiosInstance.delete(`workingTime/${id}`);
@@ -83,13 +83,16 @@ async updateWorkingTime() {
         console.error('Error deleting working time:', error);
       }
     },
+
     editWorkingTime(time) {
       this.currentWorkingTime = { ...time };
       this.isEditing = true;
     },
+
     cancelEdit() {
       this.resetForm();
     },
+
     resetForm() {
       this.currentWorkingTime = {
         start: '',
@@ -99,10 +102,13 @@ async updateWorkingTime() {
     }
   },
   mounted() {
+    const token = localStorage.getItem('token');
+    this.user_id = getUserId(token);
     this.getWorkingTimes();
   }
 };
 </script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 </style>
@@ -117,7 +123,7 @@ async updateWorkingTime() {
     </div>
     
     <div>
-      <DataTable :value="workingTimes" showGridlines responsiveLayout="scroll">
+      <DataTable :value="workingTimes" responsiveLayout="scroll">
         <Column field="id" header="ID"></Column>
         <Column field="start" header="Start Time"></Column>
         <Column field="end" header="End Time"></Column>
