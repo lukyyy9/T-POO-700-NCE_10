@@ -1,7 +1,10 @@
 <template>
-    <div id="top-right-menu">
-        <button v-if="isHomePage" @click="goGraph" class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
-        <button v-if="!isHomePage && !isLoginPage" @click="goBack" class="rounded-lg border-2 border-secondary bg-transparent mt-2">Go back</button>
+    <div id="top-right-menu" class="flex flex-row">
+        <button v-if="isHomePage" @click="goGraph" class="hidden sm:block rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
+        <button v-if="!isHomePage && !isLoginPage" @click="goBack" class="hidden sm:block rounded-lg border-2 border-secondary bg-transparent mt-2">Go back</button>
+        <button @click="goGraph" class="block sm:hidden" style="color:black!important">
+            <font-awesome-icon :icon="['fas', 'chart-simple']" size="xl" />
+        </button>
     </div>
 </template>
 

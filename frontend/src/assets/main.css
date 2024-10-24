@@ -3,8 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  color: white;
+p,label,h1,h2,h3{
+    color: white;
 }
 
 #app{

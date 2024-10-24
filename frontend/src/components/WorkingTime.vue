@@ -112,7 +112,8 @@ async updateWorkingTime() {
     <div class="flex justify-between">
       <h2>Working Times {{ user_id }}</h2>
       <button v-if="!isEditing" @click="toggleCreateForm" class="rounded-lg border-2 border-secondary bg-transparent">
-      Add a working time
+      <p class="block sm:hidden">Add</p>
+      <p class="hidden sm:block">Add a working time</p>
       </button>
     </div>
     
