@@ -7,14 +7,18 @@ defmodule TimemanagerWeb.UserController do
   action_fallback TimemanagerWeb.FallbackController
 
   # Action index pour gérer les paramètres de recherche
-  def index(conn, %{"email" => email, "username" => username}) do
-    user = UserContext.get_by_email_or_username(email, username)
-    render(conn, "show.json", user: user)
-  end
+  def index(conn, params) do
+    cond do
+      # Cas où on veut chercher par email et username
+      Map.has_key?(params, "email") and Map.has_key?(params, "username") ->
+        user = UserContext.get_by_email_or_username(params["email"], params["username"])
+        render(conn, "show.json", user: user)
 
-  def index(conn, _params) do
-    users = UserContext.list_users()
-    render(conn, :index, users: users)
+      # Cas par défaut, lister tous les utilisateurs
+      true ->
+        users = UserContext.list_users()
+        render(conn, :index, users: users)
+    end
   end
 
   plug Timemanager.Plugs.EnsureAdminRole when action in [:create]

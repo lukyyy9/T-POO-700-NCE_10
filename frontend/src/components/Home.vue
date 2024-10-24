@@ -8,7 +8,7 @@
             <Team /> <!-- ONLY IF THE USER IS A MANAGER -->
         </div>
         <div> <!-- ONLY IF THE USER IS AN ADMIN -->
-
+            <CreateUser/>
         </div>
     </div>
 </template>
@@ -17,13 +17,15 @@
 import ClockManager from './ClockManager.vue';
 import WorkingTime from './WorkingTime.vue';
 import Team from './Team.vue';
-
+import CreateUser from './CreateUser.vue';
 export default {
     name: 'Home',
     components: {
         ClockManager,
         WorkingTime,
-        Team
+        Team, 
+        CreateUser
+
     },
     data() {
         return {

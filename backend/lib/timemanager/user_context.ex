@@ -46,7 +46,8 @@ defmodule Timemanager.UserContext do
 
   """
   def list_users do
-    Repo.all(User)
+   users =  Repo.all(User)
+    IO.inspect(users)
   end
 
   @doc """
