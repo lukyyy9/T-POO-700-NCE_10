@@ -5,8 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-config :timemanager, Timemanager.Repo,
-  start_apps: false
+import Config
 
 config :timemanager,
   ecto_repos: [Timemanager.Repo],

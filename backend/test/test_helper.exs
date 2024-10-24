@@ -6,6 +6,7 @@ Application.ensure_all_started(:timemanager)
 # Define mocks using Mox
 Mox.defmock(Timemanager.ClockContextMock, for: Timemanager.ClockContextBehaviour)
 Mox.defmock(Timemanager.UserContextMock, for: Timemanager.UserContextBehaviour)
+Mox.defmock(Timemanager.RepoMock, for: Ecto.Repo)
 
 # Set up the mock in the application environment
 Application.put_env(:timemanager, :clock_context, Timemanager.ClockContextMock)
