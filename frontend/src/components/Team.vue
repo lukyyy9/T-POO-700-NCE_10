@@ -1,7 +1,7 @@
 <template>
     <div id="team" class="bg-frame rounded-xl w-full p-5">
         <div class="flex gap-x-6">
-            <h2>My team</h2>
+            <h2>Team</h2>
             <SearchBar />
         </div>
     </div>

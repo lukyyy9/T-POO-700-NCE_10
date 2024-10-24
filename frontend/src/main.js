@@ -14,9 +14,9 @@ import Button from 'primevue/button';
 import Noir from './presets/Noir';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faHouse, faPersonWalking, faPersonWalkingArrowRight, faMugSaucer, faMugHot, faXmark,faBell, faSuitcase } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faPersonWalking, faPersonWalkingArrowRight, faMugSaucer, faMugHot, faXmark,faBell, faSuitcase, faChartSimple } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHouse, faPersonWalking, faPersonWalkingArrowRight, faMugSaucer, faMugHot, faXmark, faBell, faSuitcase);
+library.add(faHouse, faPersonWalking, faPersonWalkingArrowRight, faMugSaucer, faMugHot, faXmark, faBell, faSuitcase, faChartSimple, faHouse );
 const app = createApp(App);
 
 
