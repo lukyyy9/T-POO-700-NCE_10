@@ -50,11 +50,11 @@ defmodule Timemanager.Repo do
     end
   end
 
-  def start_link(_opts \\ []) do
+  def start_link(opts \\ []) do
     if Mix.env() == :test do
       {:ok, self()}
     else
-      super()
+      super(opts)
     end
   end
 end
