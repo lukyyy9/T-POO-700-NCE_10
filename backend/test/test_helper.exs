@@ -12,7 +12,7 @@ Mox.defmock(Timemanager.RepoMock, for: Ecto.Repo)
 Application.put_env(:timemanager, :clock_context, Timemanager.ClockContextMock)
 
 # Configure the Ecto sandbox for manual mode
-Ecto.Adapters.SQL.Sandbox.mode(Timemanager.Repo, :manual)
+# Ecto.Adapters.SQL.Sandbox.mode(Timemanager.Repo, :manual)
 
 # Configure ExUnit with formatters
 ExUnit.configure(

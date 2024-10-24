@@ -50,3 +50,7 @@ config :junit_formatter,
   include_file_line?: true
 
 config :timemanager, Timemanager.Repo, show_sensitive_data_on_connection_error: true
+
+# config :timemanager, Timemanager.Repo,
+#   pool: Ecto.Adapters.SQL.Sandbox,
+#   start_apps: false
