@@ -25,17 +25,13 @@ config :timemanager, :clock_context, Timemanager.ClockContextMock
 # Use the mock forUserContext
 config :timemanager, :user_context, Timemanager.UserContextMock
 
+config :timemanager, repo: Timemanager.RepoMock
+
 # Mock Repo during tests, use a fake database name to prevent accidental connections
 config :timemanager, Timemanager.Repo,
-  pool: Ecto.Adapters.SQL.Sandbox,
-  adapter: Ecto.Adapters.Postgres,
-  database: "mock_db",
-  username: "mock_user",
-  password: "mock_password",
-  hostname: "localhost",
-  pool_size: 10,
-  pool_timeout: 5000,
-  start_apps: false
+  adapter: Ecto.Adapters.SQLite3,
+  database: ":memory:",
+  pool: Ecto.Adapters.SQL.Sandbox
 
 # If you're using Mox for mocking
 config :timemanager, :mox_adapter, Mox

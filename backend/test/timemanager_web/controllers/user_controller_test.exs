@@ -16,11 +16,9 @@ defmodule TimemanagerWeb.UserControllerTest do
   @invalid_attrs %{username: nil, email: nil}
 
   setup %{conn: conn} do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timemanager.Repo)
-    Ecto.Adapters.SQL.Sandbox.mode(Timemanager.Repo, {:shared, self()})
+    Mox.stub_with(Timemanager.RepoMock, Timemanager.MockRepo)
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
-
   setup_all do
     # Créer le répertoire pour les résultats des tests
     File.mkdir_p!("backend/test-results")
@@ -29,7 +27,7 @@ defmodule TimemanagerWeb.UserControllerTest do
 
   describe "index" do
     setup do
-      Timemanager.Repo.delete_all(User)
+      Timemanager.RepoMock.delete_all(User)
       users = create_users()
       {:ok, users: users}
     end
@@ -54,7 +52,7 @@ defmodule TimemanagerWeb.UserControllerTest do
     end
 
     test "returns empty list when no users exist", %{conn: conn} do
-      Timemanager.Repo.delete_all(User)
+      Timemanager.RepoMock.delete_all(User)
 
       conn = get(conn, ~p"/api/users")
       assert json_response(conn, 200)["data"] == []
