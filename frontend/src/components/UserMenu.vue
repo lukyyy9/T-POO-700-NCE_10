@@ -1,9 +1,9 @@
 <template>
     <div id="user-menu" v-if="isMenuOpen">
         <div @click="editProfile" class="bg-mainFrame border border-gray-600 rounded-t-lg px-5 py-2 flex justify-center cursor-pointer hover:bg-frame">
-            Edit my profile
+            <p>Edit my profile</p>
         </div>
-        <div @click="logout" class="bg-secondary border text-black border-gray-600 rounded-b-lg px-5 py-2 flex justify-center cursor-pointer hover:bg-secondaryAccent">
+        <div @click="logout" class="bg-secondary border border-gray-600 rounded-b-lg px-5 py-2 flex justify-center cursor-pointer hover:bg-secondaryAccent">
             Logout
         </div>
     </div>
