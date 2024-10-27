@@ -58,6 +58,20 @@ defmodule TimemanagerWeb.UserController do
         |> json(%{error: to_string(reason)})
     end
   end
+  def add_user_to_team(conn, %{"id" => manager_id, "userId" => user_id}) do
+    case UserContext.add_user_to_manager_team(manager_id, user_id) do
+      {:ok, user} ->
+        json(conn, %{data: user})
+      {:error, reason} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{error: reason})
+    end
+  end
+  def get_manager_team(conn, %{"id" => manager_id}) do
+    team_users = UserContext.get_users_by_manager(manager_id)
+    json(conn, %{data: team_users})
+  end
 
 
   def delete(conn, %{"id" => id}) do

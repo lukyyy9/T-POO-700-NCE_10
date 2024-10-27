@@ -4,7 +4,7 @@ import Config
 config :timemanager, Timemanager.Repo,
   username: "postgres",
   password: "pwd",
-  hostname: "host.docker.internal",
+  hostname: "192.168.1.40",
   database: "timemanager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,

@@ -1,13 +1,15 @@
 defmodule Timemanager.UserContext.User do
   use Ecto.Schema
   import Ecto.Changeset
-
+  @derive {Jason.Encoder, only: [:id, :username, :email, :role, :manager_id, :inserted_at, :updated_at]}
   schema "users" do
     field :username, :string
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
     field :role, :integer, default: 1
+    belongs_to :manager, Timemanager.UserContext.User, foreign_key: :manager_id # Ajoute la relation avec manager
+
 
     timestamps()
   end
@@ -15,7 +17,7 @@ defmodule Timemanager.UserContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :password, :role])
+    |> cast(attrs, [:username, :email, :password, :role, :manager_id])
     |> validate_required([:username, :email, :role])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)

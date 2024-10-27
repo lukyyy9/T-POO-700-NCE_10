@@ -26,6 +26,8 @@ defmodule TimemanagerWeb.Router do
     pipe_through :authenticated
 
     # Users (protected routes)
+    post "/managers/:id/add-user", UserController, :add_user_to_team
+    get "/managers/:id/team", UserController, :get_manager_team
     get "/workingTime/:user_id/:id", WorkingTimeController, :get_by_user_id_and_id
     resources "/users", UserController, except: [:new, :edit]
 
