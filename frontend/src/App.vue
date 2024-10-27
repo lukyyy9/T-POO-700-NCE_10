@@ -96,14 +96,12 @@ async function calculateHours() {
         sessionStart = null;
       }
     }
-    if (inSession && sessionStart) {
-      totalDuration += moment().diff(sessionStart);
+    if(inSession) {
       startTimer();
     } else {
       stopTimer();
     }
     elapsed.value = Math.floor(totalDuration / 1000);
-
     } else {
       console.log('No clocks for today');
     }
@@ -122,12 +120,7 @@ watch(route, () => {
   getUsername();
   calculateHours();
 });
-// watchEffect(() => {
-//   const timer = setInterval(() => {
-//       calculateHours();
-//     }, 1000);
-//   return () => clearInterval(timer);
-// })
+
 </script>
 
 <template>
