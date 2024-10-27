@@ -7,6 +7,7 @@
         <WorkingTime />
       </div>
       <Team v-if="userRole === 2" />
+    </div>
 
     <!-- Section pour l'administrateur uniquement -->
     <div v-if="userRole === 3">
