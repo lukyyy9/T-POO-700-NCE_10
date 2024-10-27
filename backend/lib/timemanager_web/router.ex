@@ -14,6 +14,7 @@ defmodule TimemanagerWeb.Router do
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated
+
   end
 
   scope "/api", TimemanagerWeb do
@@ -26,6 +27,9 @@ defmodule TimemanagerWeb.Router do
     pipe_through :authenticated
 
     # Users (protected routes)
+    get "/users/me", UserController, :me
+    post "/managers/:id/add-user", UserController, :add_user_to_team
+    get "/managers/:id/team", UserController, :get_manager_team
     get "/workingTime/:user_id/:id", WorkingTimeController, :get_by_user_id_and_id
     resources "/users", UserController, except: [:new, :edit]
 
