@@ -45,7 +45,7 @@ defmodule Timemanager.UserContext do
 
     %User{}
     |> User.changeset(attrs)
-    |> put_password_hash(attrs["password"])  # Correctly handle password
+    |> put_password_hash(attrs["password"])
     |> Repo.insert()
   end
 
@@ -93,58 +93,57 @@ defmodule Timemanager.UserContext do
     User.changeset(user, attrs)
   end
 
-  # Function to create an admin user (role = 3)
+  @doc """
+  Creates an admin user (role = 3).
+  """
   @spec create_admin(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create_admin(params) do
     %User{}
     |> User.changeset(params)
-    |> User.changeset_role(%{role: 3})  # Admin role as 3
+    |> User.changeset_role(%{role: 3})
     |> Repo.insert()
   end
 
-  # Function to set an existing user as admin (role = 3)
   @spec set_admin_role(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def set_admin_role(user) do
     user
-    |> User.changeset_role(%{role: 3})  # Admin role as 3
+    |> User.changeset_role(%{role: 3})
     |> Repo.update()
   end
 
-  # Function to create a manager user (role = 2)
   @spec create_manager(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create_manager(params) do
     %User{}
     |> User.changeset(params)
-    |> User.changeset_role(%{role: 2})  # Manager role as 2
+    |> User.changeset_role(%{role: 2})
     |> Repo.insert()
   end
 
-  # Function to set an existing user as manager (role = 2)
   @spec set_manager_role(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def set_manager_role(user) do
     user
-    |> User.changeset_role(%{role: 2})  # Manager role as 2
+    |> User.changeset_role(%{role: 2})
     |> Repo.update()
   end
 
   def add_user_to_manager_team(manager_id, user_id) do
-    # Vérifie d'abord si l'utilisateur existe dans la base de données
     case Repo.get(User, user_id) do
       nil ->
-        {:error, "User not found"} # Si l'utilisateur n'existe pas, renvoie une erreur
-
+        {:error, "User not found"}
       user ->
-        # Ajoute l'utilisateur à l'équipe du manager
         changeset = User.changeset(user, %{manager_id: manager_id})
 
         case Repo.update(changeset) do
           {:ok, updated_user} ->
-            {:ok, updated_user} # Si la mise à jour est réussie, retourne l'utilisateur mis à jour
-
+            {:ok, updated_user}
           {:error, reason} ->
-            {:error, reason} # Si une erreur se produit lors de la mise à jour, renvoie l'erreur
+            {:error, reason}
         end
     end
+  end
+
+  def get_users_by_manager(manager_id) do
+    Repo.all(from u in User, where: u.manager_id == ^manager_id)
   end
 end
 defmodule Timemanager.UserContext do
@@ -194,7 +193,7 @@ defmodule Timemanager.UserContext do
 
     %User{}
     |> User.changeset(attrs)
-    |> put_password_hash(attrs["password"])  # Correctly handle password
+    |> put_password_hash(attrs["password"])
     |> Repo.insert()
   end
 
@@ -242,59 +241,55 @@ defmodule Timemanager.UserContext do
     User.changeset(user, attrs)
   end
 
-  # Function to create an admin user (role = 3)
+  @doc """
+  Creates an admin user (role = 3).
+  """
   @spec create_admin(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create_admin(params) do
     %User{}
     |> User.changeset(params)
-    |> User.changeset_role(%{role: 3})  # Admin role as 3
+    |> User.changeset_role(%{role: 3})
     |> Repo.insert()
   end
 
-  # Function to set an existing user as admin (role = 3)
   @spec set_admin_role(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def set_admin_role(user) do
     user
-    |> User.changeset_role(%{role: 3})  # Admin role as 3
+    |> User.changeset_role(%{role: 3})
     |> Repo.update()
   end
 
-  # Function to create a manager user (role = 2)
   @spec create_manager(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create_manager(params) do
     %User{}
     |> User.changeset(params)
-    |> User.changeset_role(%{role: 2})  # Manager role as 2
+    |> User.changeset_role(%{role: 2})
     |> Repo.insert()
   end
 
-  # Function to set an existing user as manager (role = 2)
   @spec set_manager_role(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def set_manager_role(user) do
     user
-    |> User.changeset_role(%{role: 2})  # Manager role as 2
+    |> User.changeset_role(%{role: 2})
     |> Repo.update()
   end
 
   def add_user_to_manager_team(manager_id, user_id) do
-    # Vérifie d'abord si l'utilisateur existe dans la base de données
     case Repo.get(User, user_id) do
       nil ->
-        {:error, "User not found"} # Si l'utilisateur n'existe pas, renvoie une erreur
-
+        {:error, "User not found"}
       user ->
-        # Ajoute l'utilisateur à l'équipe du manager
         changeset = User.changeset(user, %{manager_id: manager_id})
 
         case Repo.update(changeset) do
           {:ok, updated_user} ->
-            {:ok, updated_user} # Si la mise à jour est réussie, retourne l'utilisateur mis à jour
-
+            {:ok, updated_user}
           {:error, reason} ->
-            {:error, reason} # Si une erreur se produit lors de la mise à jour, renvoie l'erreur
+            {:error, reason}
         end
     end
   end
+
   def get_users_by_manager(manager_id) do
     Repo.all(from u in User, where: u.manager_id == ^manager_id)
   end

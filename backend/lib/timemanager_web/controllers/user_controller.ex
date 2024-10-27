@@ -73,6 +73,21 @@ defmodule TimemanagerWeb.UserController do
     json(conn, %{data: team_users})
   end
 
+  def me(conn, _params) do
+    case Guardian.Plug.current_resource(conn) do
+      nil ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{error: "Utilisateur non trouvé"})
+
+      user ->
+        # On retourne les informations de l'utilisateur connecté
+        conn
+        |> put_status(:ok)
+        |> json(%{id: user.id, username: user.username, role: user.role, email: user.email})
+    end
+  end
+
 
   def delete(conn, %{"id" => id}) do
     user = UserContext.get_user!(id)

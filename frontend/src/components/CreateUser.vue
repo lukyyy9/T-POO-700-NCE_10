@@ -42,9 +42,22 @@ export default {
     },
     async createUsers() {
       try {
-        const response = await axiosInstance.post('/users', {
-          user: this.newUser
-        })
+        const token = localStorage.getItem('token') // Récupérer le token depuis le localStorage
+        if (!token) {
+          console.error('Token not found')
+          return
+        }
+        const response = await axiosInstance.post(
+          '/users',
+          {
+            user: this.newUser
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
         console.log('User created successfully:', response.data)
         this.users.push(response.data.data)
         this.newUser = {
