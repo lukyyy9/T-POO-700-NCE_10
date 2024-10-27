@@ -1,8 +1,3 @@
-// search bar permet de chercher utilisateur qui sont employé et manager dans base de donnée //
-afficher les utilisateurs //creer un nouvel utilisateur dans la base de donnée avec un role employé
-ou manager // cliquer sur le nom d'un utilisateur pour afficher une nouvelle page et voir la liste
-des employés
-
 <script>
 import axiosInstance from '../../axios.js'
 
@@ -22,14 +17,31 @@ export default {
   methods: {
     async getUsers() {
       try {
-        const response = await axiosInstance.get('/users')
-        console.log('API Response:', response.data.data)
-        this.users = response.data.data.filter((user) => user.role === 1 || user.role === 2)
+        const token = localStorage.getItem('token')
+        if (!token) {
+          console.error('Token not found')
+          return
+        }
+        const response = await axiosInstance.get('/users', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
+        console.log('API Response:', response.data)
+
+        if (Array.isArray(response.data.data)) {
+          this.users = response.data.data.filter((user) => user.role === 1 || user.role === 2)
+        } else {
+          console.error('Invalid data format, expected an array of users in data')
+        }
+
         console.log('Filtered Users:', this.users)
       } catch (error) {
         console.error('Error fetching users:', error)
       }
     },
+
     goToManager(user) {
       if (user.role === 2) {
         console.log('Navigating to manager team:', user.username)
@@ -42,7 +54,7 @@ export default {
     },
     async createUsers() {
       try {
-        const token = localStorage.getItem('token') // Récupérer le token depuis le localStorage
+        const token = localStorage.getItem('token')
         if (!token) {
           console.error('Token not found')
           return

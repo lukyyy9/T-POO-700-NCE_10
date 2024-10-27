@@ -39,7 +39,13 @@ export default {
         console.log('Manager ID:', managerId)
 
         const teamResponse = await axiosInstance.get(`/managers/${managerId}/team`)
-        this.teamUsers = teamResponse.data.data
+
+        if (Array.isArray(teamResponse.data.data)) {
+          this.teamUsers = teamResponse.data.data
+        } else {
+          console.error('Invalid data format, expected an array of users in data')
+        }
+
         console.log('Team members:', this.teamUsers)
       } catch (error) {
         console.error("Erreur lors de la récupération de l'équipe :", error)
