@@ -3,6 +3,7 @@
     <div class="flex gap-x-6">
       <h2>My team</h2>
       <SearchBar />
+
     </div>
     <ul class="space-y-2 mt-4">
       <li

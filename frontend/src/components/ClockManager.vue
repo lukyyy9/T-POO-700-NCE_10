@@ -26,7 +26,7 @@
                                 </div>
                                 <p>End</p>
                             </div>
-                            <div v-else-if="clock.status === true" class="flex items-center">
+                            <div v-else-if="clock.status === false" class="flex items-center">
                                 <div class="w-16 pl-[2px]">
                                     <font-awesome-icon :icon="['fas', 'suitcase']"/>
                                 </div>
@@ -60,10 +60,37 @@ export default {
             startDateTime: null,
             clockIn: false,
             userId: null,
-            warning: false,
-             };
+            elapsed: 0,
+            intervalId: null
+            };
     },
+    
     methods: {
+        startTimer() {
+                //clearInterval(this.intervalId);
+                this.intervalId = setInterval(() => {
+                this.elapsed += 1;
+            }, 1000);
+        },
+        
+        stopTimer() {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+        },
+
+        formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+            if (hours >= 8) {
+                return `${hours}:${minutes}:${secs} - Time to go home!`;
+            } else if(hours === 0) {
+                return `${hours}:${minutes}:${secs} - Go back to work!`;
+            } else {
+                return `${hours}:${minutes}:${secs} - Keep it up!`;
+            }
+        },
+
         refresh() {
             const savedToken = localStorage.getItem('token');
             if(savedToken) {
@@ -75,34 +102,43 @@ export default {
             axiosInstance.get(`clocks/${this.userId}`)
                 .then(response => {  
                     const clocksData = response.data.data;
-                    console.log('data', clocksData);
+
                     if(clocksData){
+                        this.clocksDay = clocksData.filter(clock => moment(clock.time).isSame(moment(), 'day'));
+
                         const lastClock = clocksData[clocksData.length - 1];
-                    this.startDateTime = moment(lastClock.time).format('YYYY-MM-DD HH:mm:ss');
-                    this.clockIn = lastClock.status;
-                    console.log('clockIn:', this.clockIn);
-
-                    const currentDay = moment().format('DD MMMM YY');
-                        clocksData.forEach(ele => {
-                            const dayClock = moment(ele.time).format('DD MMMM YY');
-                            if (currentDay === dayClock) {
-                                this.clocksDay.push(ele);
-                            }
-                        });
-
-                    //Warning forget clock
-                    if(clocksData.length % 2 !== 0) {
-                        this.warning = true;
+                        this.startDateTime = moment(lastClock.time).format('YYYY-MM-DD HH:mm:ss');
+                        this.clockIn = lastClock.status;
                         
-                    } else {
-                        this.warning = false;
-                    };
-                    console.log('warning', this.warning);
-                    } else {
-                      console.log('not clocks');
-                    };
+                        let inSession = false;
+                        let sessionStart = null;
+                        let totalDuration = 0; 
+                        for (let i = 0; i < this.clocksDay.length; i++) {
+                            const clock = this.clocksDay[i];
+                            if (!clock.status) {
+                                sessionStart = moment(clock.time);
+                                inSession = true;
+                            } else if (inSession && sessionStart){
+                                totalDuration += moment(clock.time).diff(sessionStart);
+                                inSession = false;
+                                sessionStart = null;
+                            }
+                        }
 
-                    
+                // Si une session est en cours, ajouter le temps depuis le dernier pointage
+                if (inSession && sessionStart) {
+                    totalDuration += moment().diff(sessionStart);
+                    this.startTimer();
+                } else {
+                    this.stopTimer();
+                }
+
+                this.elapsed = Math.floor(totalDuration / 1000);
+
+                } else {
+                console.log('No clocks for today');
+                }
+
                 })
                 .catch(error => {
                     console.error('There was an error getting the user', error);
@@ -122,6 +158,11 @@ export default {
                     this.startDateTime = moment(newClock.time).format('YYYY-MM-DD HH:mm:ss');
                     this.clockIn = newClock.status;
                     this.clocksDay.push(newClock);
+                    if(newClock.status) {
+                        this.startTimer();
+                    } else {
+                        this.stopTimer();
+                    }
                     resolve('Clock created successfully!');
                 } catch (error) {
                     console.error('There was an error creating a new Clock:', error);
@@ -134,11 +175,11 @@ export default {
                 position: 'top-center'
             });
         },
-       
     },
     mounted() {
         this.refresh();
-    }
+    },
+    
 };
 </script>
 
