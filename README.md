@@ -6,6 +6,10 @@
   - [Backend installation](#backend-installation)
   - [Frontend installation](#frontend-installation)
 - [Running the project](#running-the-project)
+- [Deployment](#deployment)
+  - [Server deployment](#server-deployment)
+  - [Application deployment](#application-deployment)
+- [Troubleshooting](#troubleshooting)
 - [Useful Postgres commands](#useful-postgres-commands)
 - [Used commands to init the project (only for reference)](#used-commands-to-init-the-project-only-for-reference)
 
