@@ -2,7 +2,7 @@
     <div id="top-right-menu" class="flex flex-row">
         <button v-if="isHomePage" @click="goGraph" class="hidden sm:block rounded-lg border-2 border-secondary bg-transparent mt-2">Go to graphs</button>
         <button v-if="!isHomePage && !isLoginPage" @click="goBack" class="hidden sm:block rounded-lg border-2 border-secondary bg-transparent mt-2">Go back</button>
-        <button @click="goGraph" class="block sm:hidden" :style="{ color: isGraphPage ? '#111' : '#817447'  }">
+        <button v-if="userRole !== 3" @click="goGraph" class="block sm:hidden" :style="{ color: isGraphPage ? '#111' : '#817447'  }">
             <font-awesome-icon :icon="['fas', 'chart-simple']" size="xl" />
         </button>
     </div>
@@ -10,13 +10,14 @@
 
 <script>
 import { getUserId } from '@/utils/user';
-import { computed } from 'vue';
+import { getUserRole } from '@/utils/user';
 
 export default {
     name: 'TopRightMenu',
     data() {
         return {
             userId: null,
+            userRole: null
         }
     },
     computed: {
@@ -34,6 +35,15 @@ export default {
         goBack() {
             this.$router.go(-1);
         },
+        getRole() {
+            const savedToken = localStorage.getItem('token');
+            if(savedToken) {
+                this.userRole = getUserRole(savedToken);
+                console.log('userRole', this.userRole);
+            } else {
+                console.log('no token found');
+            }
+        },
         goGraph() {
             const savedToken = localStorage.getItem('token');
             if(savedToken) {
@@ -49,9 +59,8 @@ export default {
             }
         }
     },
-    mounted() {
-
-    }
+    onMounted() {
+    },
 };
 </script>
 

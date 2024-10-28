@@ -6,6 +6,7 @@ import UserMenu from './components/UserMenu.vue';
 import TopRightMenu from './components/TopRightMenu.vue';
 import axiosInstance from '../axios.js';
 import { getUserId } from '@/utils/user';
+import { getUserRole } from '@/utils/user';
 import moment from 'moment';
 import { Toaster, toast } from "@steveyuowo/vue-hot-toast";
 import "@steveyuowo/vue-hot-toast/vue-hot-toast.css";
@@ -15,6 +16,7 @@ const intervalId = ref(null);
 const elapsed = ref('Calculating...');
 const clocksDay = ref([]);
 const userId = ref(null);
+const userRole = ref(null);
 const username = ref(null);
 const route = useRoute();
 const router = useRouter();
@@ -49,11 +51,14 @@ function formatDuration(seconds) {
   const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
   if (hours >= 8) {
-    return `${hours}:${minutes}:${secs} - Time to go home!`;
+    //return `${hours}:${minutes}:${secs} - Time to go home!`;
+    return `Time to go home!`;
   } else if(hours === 0) {
-    return `${hours}:${minutes}:${secs} - Go back to work!`;
+    //return `${hours}:${minutes}:${secs} - Go back to work!`;
+    return `Go back to work!`;
   } else {
-    return `${hours}:${minutes}:${secs} - Keep it up!`;
+    //return `${hours}:${minutes}:${secs} - Keep it up!`;
+    return `Keep it up!`;
   }
 }
 
@@ -62,6 +67,7 @@ async function getUsername() {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
       userId.value = getUserId(savedToken);
+      userRole.value = getUserRole(savedToken);
     } else {
       console.log('to token found');
     }
@@ -133,7 +139,7 @@ watch(route, () => {
       <button v-if=!isHomePage @click="clock"
         class="mr-1 bg-secondary text-black border-2 border-secondaryAccent hover:shadow-[0px_0px_9px_2px_#E7C9FF] transition-shadow duration-300">Clock
         in 📝</button>
-      <p class="text-black">{{formatDuration(elapsed)}}</p>
+      <p v-if="userRole !== 3" class="text-black">{{formatDuration(elapsed)}}</p>
     </div>
     <div class="lg:w-[150px] flex justify-end">
       <User @toggle-user-menu="toggleUserMenu" />
